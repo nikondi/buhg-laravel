@@ -1,0 +1,3 @@
+$user = User::where('email', 'nikondi@narod.ru')->update(['password' => '123'])
+$user = User::where('email', 'nikondi@narod.ru')->update(['password' => hash('123')])
+$user = User::where('email', 'nikondi@narod.ru')->update(['password' => bcrypt('123')])
