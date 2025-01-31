@@ -44,6 +44,20 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_DB=postgres
 
+    # Для сборки js
+    node:
+        build:
+            context: .
+            dockerfile: ./docker/nodejs/Dockerfile
+        tty: true
+        #restart: always
+        restart: unless-stopped
+        ports:
+            - "5173:5173"
+        working_dir: /var/www
+        volumes:
+            - .:/var/www # Монтируем локальную папку в контейнер как /var/www
+
 # Тома
 volumes:
     # Чтобы данные БД не пропадали после выключения создаем именованный том

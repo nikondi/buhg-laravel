@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libpq-dev \
     locales \
     libonig-dev \
     zip \
@@ -17,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     curl && \
     pecl install xdebug-3.2.1 && \
     docker-php-ext-enable xdebug && \
-    docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath && \
+    docker-php-ext-install pdo_pgsql mbstring zip exif pcntl && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install gd && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \

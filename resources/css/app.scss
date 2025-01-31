@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+}
+#app {
+  height: 100%;
+}
+
+
+.header-actions {
+  background-color: #ddd;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 45px;
+  }
+  &__link {
+    color: #7a80ff;
+    font-weight: 600;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+}
+
+.header-menu {
+  @apply flex items-center gap-x-2;
+  &__link {
+    @apply text-white p-1;
+  }
+}
+
+@layer utilities {
+  .header {
+    &-top {
+      @apply p-3 bg-cyan-600;
+      .container {
+        @apply flex items-center justify-between;
+      }
+    }
+
+    &__logo {
+      @apply text-2xl text-white;
+    }
+  }
+
+
+  .header-user {
+    @apply relative;
+    &__name {
+      @apply text-white flex gap-x-2 items-center cursor-pointer p-1;
+      svg {
+        font-size: 12px;
+        transition: .3s transform;
+      }
+    }
+
+    &__list {
+      @apply absolute right-0;
+      top: 100%;
+      padding-top: 25px;
+      visibility: hidden;
+      opacity: 0;
+      transition: {
+        duration: .3s;
+        property: visibility, opacity, padding-top;
+      };
+
+      ul {
+        @apply bg-white shadow rounded-md;
+      }
+
+      a {
+        @apply block py-1 px-2 transition-colors duration-300 hover:bg-gray-200;
+        width: 200px;
+
+        &:last-child {
+          @apply rounded-md;
+        }
+      }
+    }
+    &.active &__list {
+      padding-top: 5px;
+      visibility: visible;
+      opacity: 1;
+    }
+    &.active svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  .page-wrapper {
+    @apply flex flex-col h-full;
+  }
+
+  .page-content {
+    @apply h-full;
+  }
+
+  .form {
+    .form-input:not(:last-child) {
+      @apply mb-2;
+    }
+  }
+
+  .form-input {
+    @apply block;
+    &__label {
+      @apply block mb-0.5 text-gray-400 text-sm;
+    }
+
+    input {
+      @apply rounded border border-gray-400 focus:border-gray-600 hover:border-gray-500 transition-colors duration-200 outline-none py-1 px-2 w-full;
+    }
+
+    &--error &__label {
+      @apply text-red-500;
+    }
+
+    &--error input {
+      @apply border-red-500;
+    }
+
+    &__error {
+      @apply text-red-500 text-sm;
+    }
+  }
+
+  .btn {
+    @apply bg-cyan-600 block px-2 py-1.5 w-full rounded-md text-white hover:bg-cyan-700 transition-colors duration-200;
+    &.btn--small {
+      @apply text-sm;
+    }
+  }
+}
