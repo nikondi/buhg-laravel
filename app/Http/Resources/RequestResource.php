@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Request as RequestModel;
+use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,6 +18,7 @@ class RequestResource extends JsonResource
             'name' => $this->name,
             'surname' => $this->surname,
             'lastname' => $this->lastname,
+            'phone' => $this->phone,
             'birthdate' => $this->birthdate,
             'inn' => $this->inn,
             'doc_type' => $this->doc_type,
@@ -35,6 +36,7 @@ class RequestResource extends JsonResource
             'student_surname' => $this->student_surname,
             'student_lastname' => $this->student_lastname,
             'student_birthdate' => $this->student_birthdate,
+            'student_phone' => $this->student_phone,
             'student_doc_type' => $this->student_doc_type,
             'student_doc_number' => $this->student_doc_number,
             'student_doc_date' => $this->student_doc_date,

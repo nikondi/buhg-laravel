@@ -35,7 +35,7 @@ return new class extends Migration {
             $table->string('doc_number', 31);
             $table->string('doc_date');
 
-            $table->string('contract_number', 31);
+            $table->string('contract_number', 20);
             $table->string('contract_date');
             $table->float('contract_cost');
             $table->string('contract_year');

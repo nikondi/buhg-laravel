@@ -45,9 +45,37 @@ export type ResourceCollection<T> = {
 export type StateFunction<T> = React.Dispatch<React.SetStateAction<T>>
 
 
+export type TRequestStatus = 'new' | 'in_work' | 'downloaded_xml' | 'declined' | 'duplicate';
 
-export type Request = {
-
+export interface IRequest {
+  id: number
+  status: TRequestStatus
+  name: string
+  surname: string
+  lastname: string
+  birthdate: string
+  phone: string
+  inn: string
+  doc_type: string
+  doc_number: string
+  doc_date: string
+  contract_number: string
+  contract_date: string
+  contract_cost: string
+  contract_year: string
+  same_student: string
+  student_name: string
+  student_surname: string
+  student_lastname: string
+  student_birthdate: string
+  student_phone: string
+  student_doc_type: string
+  student_doc_number: string
+  student_doc_date: string
+  education_type: string
+  pickup_type: string
+  director_id: number
+  organization_id: number
 }
 
 export interface IDirector {
