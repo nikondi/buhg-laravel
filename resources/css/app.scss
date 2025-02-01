@@ -29,6 +29,10 @@ html {
     align-items: center;
     column-gap: 10px;
   }
+  &__title {
+    font-weight: 600;
+    @apply text-gray-800;
+  }
 }
 
 .header-menu {
@@ -72,7 +76,7 @@ html {
 @layer utilities {
   .header {
     &-top {
-      @apply p-3 bg-cyan-600;
+      @apply p-3 bg-cyan-800;
       .container {
         @apply flex items-center justify-between;
       }
@@ -182,8 +186,8 @@ html {
   .btn {
     @apply
       border
-      bg-cyan-600 border-cyan-600
-      hover:bg-cyan-700 hover:border-cyan-700
+      bg-cyan-700 border-cyan-700
+      hover:bg-cyan-800 hover:border-cyan-800
       block px-2 py-1.5 w-full rounded-md text-white transition-colors duration-200;
     &.btn--small {
       @apply text-sm;
