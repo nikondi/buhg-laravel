@@ -38,6 +38,37 @@ html {
   }
 }
 
+.simple-table {
+  width: 100%;
+  thead {
+    @apply bg-gray-200
+  }
+  td {
+    @apply p-2 border border-gray-300;
+  }
+  th {
+    @apply p-2 border border-gray-300 text-gray-800;
+  }
+  tbody tr {
+    @apply transition-colors duration-300 hover:bg-gray-100;
+  }
+}
+
+.director-form {
+  select {
+    @apply border border-gray-300 rounded px-2 py-0.5 bg-white;
+  }
+  input {
+    @apply border border-gray-300 rounded px-2 py-0.5;
+  }
+  &__button {
+    @apply text-gray-400 duration-200 transition-colors p-1;
+    &:hover {
+      @apply text-gray-700;
+    }
+  }
+}
+
 @layer utilities {
   .header {
     &-top {

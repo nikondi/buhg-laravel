@@ -1,4 +1,5 @@
 import {Config} from "ziggy-js";
+import React from "react";
 
 export interface User {
   id: number;
@@ -43,7 +44,19 @@ export type ResourceCollection<T> = {
   }
 }
 
+export type StateFunction<T> = React.Dispatch<React.SetStateAction<T>>
+
+
 
 export type Request = {
 
+}
+
+export interface IDirector {
+  id: number
+  type: string
+  name: string
+  surname: string
+  lastname: string
+  document: string
 }

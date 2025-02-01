@@ -25,9 +25,9 @@ return new class extends Migration {
             $table->string('education_type');
             $table->string('pickup_type');
 
-            $table->string('name', 31);
             $table->string('surname', 31);
-            $table->string('lastname', 31);
+            $table->string('name', 31);
+            $table->string('lastname', 31)->nullable();
             $table->char('phone', 10);
             $table->date('birthdate');
             $table->string('inn', 12);
@@ -42,8 +42,8 @@ return new class extends Migration {
 
             $table->boolean('same_student');
 
-            $table->string('student_name', 31)->nullable();
             $table->string('student_surname', 31)->nullable();
+            $table->string('student_name', 31)->nullable();
             $table->string('student_lastname', 31)->nullable();
             $table->char('student_phone', 10)->nullable();
             $table->date('student_birthdate')->nullable();

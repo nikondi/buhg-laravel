@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->tinyInteger('type');
             $table->string('name', 31);
             $table->string('surname', 31);
-            $table->string('lastname', 31);
+            $table->string('lastname', 31)->nullable();
             $table->string('document', 31);
         });
     }

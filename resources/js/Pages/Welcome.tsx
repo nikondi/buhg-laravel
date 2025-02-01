@@ -5,7 +5,7 @@ type Props = {
   requests: ResourceCollection<Request>
 }
 
-export default function Welcome() {
+export default function Welcome({}: Props) {
   return <>
     <HeaderActions>
       <HeaderTitle/>
