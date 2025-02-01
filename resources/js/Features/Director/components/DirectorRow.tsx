@@ -1,5 +1,5 @@
 import {IDirector} from "@/types";
-import {Editable} from "@/Components/Editable/contexts/EditableContext";
+import {Editable} from "@/Components/Editable";
 import DirectorForm from "./DirectorForm";
 
 type Props = {

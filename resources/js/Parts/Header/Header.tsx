@@ -10,7 +10,7 @@ export default function Header() {
         </div>
         <div className="header-menu">
           <Link href={route('director.index')} className="header-menu__link">Директора ОО</Link>
-          <Link className="header-menu__link">Организации</Link>
+          <Link href={route('organization.index')} className="header-menu__link">Организации</Link>
           <UserMenu/>
         </div>
       </div>

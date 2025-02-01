@@ -1,8 +1,9 @@
 import {IDirector} from "@/types";
 import {TDirectorIndexPage} from "../types";
 import {useForm, usePage} from "@inertiajs/react";
-import {Edit, useEditable, View} from "@/Components/Editable/contexts/EditableContext";
+import {Edit, useEditable, View} from "@/Components/Editable";
 import {Icon} from "@/Components";
+import {Input, Select} from "@/Components/Form";
 
 export default function DirectorForm({director}: {director: IDirector}) {
   const {labels} = usePage<TDirectorIndexPage>().props
@@ -33,9 +34,9 @@ export default function DirectorForm({director}: {director: IDirector}) {
   return <tr className="director-form">
     <td>
       <Edit>
-        <select value={data.type} onChange={(e) => setData('type', e.target.value)}>
+        <Select label="" showLabel={false} value={data.type} onChange={(e) => setData('type', e.target.value)}>
           {Object.entries(labels).map(([key, value]) => <option value={key} key={key}>{value}</option>)}
-        </select>
+        </Select>
       </Edit>
       <View>
         {labels[director.type]}
@@ -44,9 +45,9 @@ export default function DirectorForm({director}: {director: IDirector}) {
     <td className="director-form__fio">
       <Edit>
         <div className="flex gap-x-2 flex-wrap">
-          <input value={data.surname} onChange={(e) => setData('surname', e.target.value)} placeholder="Фамилия"/>
-          <input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Имя"/>
-          <input value={data.lastname} onChange={(e) => setData('lastname', e.target.value)} placeholder="Отчество"/>
+          <Input label="Фамилия" value={data.surname} onChange={(e) => setData('surname', e.target.value)} showLabel={false}/>
+          <Input label="Имя" value={data.name} onChange={(e) => setData('name', e.target.value)} showLabel={false}/>
+          <Input label="Отчество" value={data.lastname} onChange={(e) => setData('lastname', e.target.value)} showLabel={false}/>
         </div>
       </Edit>
       <View>
@@ -55,7 +56,7 @@ export default function DirectorForm({director}: {director: IDirector}) {
     </td>
     <td>
       <Edit>
-        <input value={data.document} onChange={(e) => setData('document', e.target.value)} placeholder="Документ"/>
+        <Input label="Документ" value={data.document} onChange={(e) => setData('document', e.target.value)} showLabel={false}/>
       </Edit>
       <View>
         {director.document}

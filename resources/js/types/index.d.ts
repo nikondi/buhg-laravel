@@ -1,4 +1,3 @@
-import {Config} from "ziggy-js";
 import React from "react";
 
 export interface User {
@@ -17,7 +16,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
   };
   title: string
   pageTitle: string
-  ziggy: Config & { location: string };
 };
 
 export type ResourceCollection<T> = {
@@ -59,4 +57,11 @@ export interface IDirector {
   surname: string
   lastname: string
   document: string
+}
+
+export interface IOrganization {
+  id: number
+  name: string
+  inn: string
+  kpp: string
 }
