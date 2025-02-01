@@ -17,6 +17,8 @@ export default function DirectorForm({director}: {director: IDirector}) {
   });
 
   const onDelete = () => {
+    if(!confirm('Точно удалить?'))
+      return;
     deleteForm(route('director.destroy', [director.id]), {
       preserveScroll: true
     })

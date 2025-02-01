@@ -18,7 +18,7 @@ export default function Index({directors}: TDirectorIndexPage) {
       </div>
     </HeaderActions>
     <div className="container">
-      {creating && <Create/>}
+      {creating && <Create decline={() => setCreating(false)}/>}
       <table className="simple-table my-4">
         <thead>
         <tr>

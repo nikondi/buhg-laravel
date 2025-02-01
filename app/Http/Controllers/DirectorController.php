@@ -33,4 +33,24 @@ class DirectorController extends Controller
         $director->update($data);
         return back();
     }
+
+    public function destroy(Director $director) {
+        $director->delete();
+        return back();
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'surname' => 'required',
+            'name' => 'required',
+            'document' => 'required',
+            'lastname' => 'nullable',
+            'type' => '',
+        ]);
+
+        Director::create($data);
+
+        return back();
+    }
 }
