@@ -119,3 +119,18 @@ export interface IOrganization {
   inn: string
   kpp: string
 }
+
+export interface IUser {
+  id: number
+  name: string
+  login: string
+  email: string
+}
+
+export interface IHistory {
+  id: number
+  comment: string
+  user: IUser
+  request_id: number
+  created_at: string
+}

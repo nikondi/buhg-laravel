@@ -5,6 +5,7 @@ export type TRequestEditPage = PageProps<{
   directors: KeyValue[]
   organizations: KeyValue[]
   documents: KeyValue[]
+  statuses: KeyValue[]
 }>
 
 export type IRequestForm = {

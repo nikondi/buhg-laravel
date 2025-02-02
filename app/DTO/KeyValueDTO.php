@@ -4,14 +4,13 @@ namespace App\DTO;
 
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class KeyValueDTO implements Arrayable {
     public ?string $key = null;
     public ?string $value = null;
 
-    public function __construct(Model $model, string $key, string|Closure $value)
+    public function __construct($model, string $key, string|Closure $value)
     {
         $this->key = $model->$key;
         if($value instanceof Closure)
