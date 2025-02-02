@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\RequestObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy(RequestObserver::class)]
 class RequestModel extends Model
 {
     public $timestamps = false;
@@ -20,22 +23,6 @@ class RequestModel extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::created(function (self $model) {
-            if(!$model->number) {
-                $model->number = str_pad($model->id, 12, "0", STR_PAD_LEFT);
-                $model->save();
-            }
-        });
-        static::updated(function (self $model) {
-            if(!$model->number) {
-                $model->number = str_pad($model->id, 12, "0", STR_PAD_LEFT);
-            }
-        });
-    }
 
     protected function casts(): array
     {
@@ -79,6 +66,7 @@ class RequestModel extends Model
         'student_name',
         'student_lastname',
         'student_phone',
+        'student_inn',
         'student_birthdate',
         'student_doc_type',
         'student_doc_number',

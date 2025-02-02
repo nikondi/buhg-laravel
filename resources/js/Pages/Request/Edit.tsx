@@ -6,6 +6,10 @@ import {mergeClass} from "@/helpers";
 import useRequestForm, {RequestForm} from "@/Features/Request/contexts/RequestFormContext";
 import {Input, Switcher, Select, Textarea} from "@/Features/Request/components";
 
+const onlyChars = (value: string) => value.replace(/[^A-zА-я]/, '');
+const onlyNumbers = (value: string) => value.replace(/\D/, '');
+const inn = (value: string) => onlyNumbers(value).substring(0, 12);
+const phone = (value: string) => onlyNumbers(value).substring(0, 10);
 
 export default function Edit({request, directors, organizations, documents}: TRequestEditPage) {
   return <>
@@ -20,18 +24,18 @@ export default function Edit({request, directors, organizations, documents}: TRe
         <div className="flex-1 flex gap-x-5">
           <div className="flex-1">
             <div className="text-sm font-bold text-gray-600 text-center mb-3">Данные ФЛ, оплатившего образовательные услуги</div>
-            <Input label="Фамилия" name="surname"/>
-            <Input label="Имя" name="name"/>
-            <Input label="Отчество" name="lastname"/>
-            <Input type="date" label="Дата рождения" name="birthdate"/>
-            <Input label="ИНН" name="inn"/>
+            <Input label="Фамилия" name="surname" format={onlyChars} required/>
+            <Input label="Имя" name="name" format={onlyChars} required/>
+            <Input label="Отчество" name="lastname" format={onlyChars} required/>
+            <Input type="date" label="Дата рождения" name="birthdate" required/>
+            <Input label="ИНН" name="inn" format={inn} required/>
             <Select label="Документ" name="doc_type">
               {documents.map(({key, value}) => <option key={key} value={key}>{value}</option>)}
             </Select>
-            <Input label="Серия и номер документа" name="doc_number"/>
-            <Input type="date" label="Дата выдачи" name="doc_date"/>
-            <Input type="tel" label="Номер телефона" name="phone"/>
-            <Input type="email" label="E-mail" name="email"/>
+            <Input label="Серия и номер документа" name="doc_number" required/>
+            <Input type="date" label="Дата выдачи" name="doc_date" required/>
+            <Input type="tel" label="Номер телефона" name="phone" format={phone} required/>
+            <Input type="email" label="E-mail" name="email" required/>
           </div>
           <StudentPart/>
           <div className="flex-1">
@@ -74,16 +78,16 @@ function StudentPart() {
 
   return <div className={mergeClass('flex-1', data.same_student && 'hidden')}>
     <div className="text-sm font-bold text-gray-600 text-center mb-3">Данные ФЛ, которому оказаны образовательные услуги</div>
-    <Input label="Фамилия" name="student_surname" required={!data.same_student}/>
-    <Input label="Имя" name="student_name" required={!data.same_student}/>
-    <Input label="Отчество" name="student_lastname" required={!data.same_student}/>
+    <Input label="Фамилия" name="student_surname" format={onlyChars} required={!data.same_student}/>
+    <Input label="Имя" name="student_name" format={onlyChars} required={!data.same_student}/>
+    <Input label="Отчество" name="student_lastname" format={onlyChars}/>
     <Input type="date" label="Дата рождения" name="student_birthdate" required={!data.same_student}/>
-    <Input label="ИНН" name="student_inn" required={!data.same_student}/>
+    <Input label="ИНН" name="student_inn" format={inn} required={!data.same_student}/>
     <Select label="Документ" name="student_doc_type" required={!data.same_student}>
       {documents.map(({key, value}) => <option key={key} value={key}>{value}</option>)}
     </Select>
     <Input label="Серия и номер документа" name="student_doc_number" required={!data.same_student}/>
     <Input type="date" label="Дата выдачи" name="student_doc_date" required={!data.same_student}/>
-    <Input type="tel" label="Номер телефона" name="student_phone" required={!data.same_student}/>
+    <Input type="tel" label="Номер телефона" name="student_phone" format={phone} required={!data.same_student}/>
   </div>
 }

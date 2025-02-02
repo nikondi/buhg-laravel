@@ -1,5 +1,5 @@
 import {mergeClass} from "@/helpers";
-import {InputHTMLAttributes, TextareaHTMLAttributes} from "react";
+import {TextareaHTMLAttributes} from "react";
 
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   error?: string

@@ -34,8 +34,8 @@ class RequestController extends Controller
             ]);
     }
 
-    public function update(RequestModel $requestModel, RequestUpdateRequest $request) {
-        $requestModel->update($request->except('comment'));
+    public function update(RequestModel $request, RequestUpdateRequest $_request) {
+        $request->update($_request->except('comment'));
 
         return back();
     }

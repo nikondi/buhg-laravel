@@ -2,7 +2,7 @@ import {RequestFormContext} from "./RequestFormContext";
 import {useForm} from "@inertiajs/react";
 import {IRequest} from "@/types";
 import {IRequestForm} from "@/Features/Request/types";
-import {FormEventHandler, PropsWithChildren} from "react";
+import {FormEventHandler, PropsWithChildren, useEffect} from "react";
 import toast from "react-hot-toast";
 
 type Props = PropsWithChildren<{
@@ -10,8 +10,8 @@ type Props = PropsWithChildren<{
   className?: string
 }>
 
-export default function RequestForm({request, children, className}: Props) {
-  const {data, setData, errors, put} = useForm<IRequestForm>({
+const getRequestFormData = (request: IRequest): IRequestForm => {
+  return {
     comment: "",
     number: request.number || '',
     status: request.status || '',
@@ -43,13 +43,18 @@ export default function RequestForm({request, children, className}: Props) {
     pickup_type: request.pickup_type || '',
     director_id: request.director_id,
     organization_id: request.organization_id
-  });
+  };
+}
+
+export default function RequestForm({request, children, className}: Props) {
+  const {data, setData, errors, put} = useForm<IRequestForm>(getRequestFormData(request));
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     const toast_id = toast.loading('Сохранение');
     put(route('request.update', [request.id]), {
-      onSuccess: () => {
+      onSuccess: ({props}) => {
+        setData(getRequestFormData(props.request as IRequest))
         toast.success('Запрос сохранен');
       },
       onFinish: () => {

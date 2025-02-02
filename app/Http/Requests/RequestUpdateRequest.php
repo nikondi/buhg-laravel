@@ -22,7 +22,7 @@ class RequestUpdateRequest extends FormRequest
             'email' => ['required', 'email', 'ends_with:.ru'],
             'birthdate' => ['required', 'date'],
             'inn' => ['required', 'digits_between:10,12'],
-            'doc_type' => ['required', 'integer'],
+            'doc_type' => ['required', 'numeric'],
             'doc_number' => ['required'],
             'doc_date' => ['required'],
             'contract_number' => ['required'],
@@ -37,7 +37,7 @@ class RequestUpdateRequest extends FormRequest
             'student_lastname' => ['nullable', 'required_if:same_student,false'],
             'student_phone' => ['nullable', 'digits:10', 'required_if:same_student,false'],
             'student_birthdate' => ['nullable', 'date', 'required_if:same_student,false'],
-            'student_doc_type' => ['nullable', 'integer', 'required_if:same_student,false'],
+            'student_doc_type' => ['nullable', 'numeric', 'required_if:same_student,false'],
             'student_doc_number' => ['nullable', 'required_if:same_student,false'],
             'student_doc_date' => ['nullable', 'required_if:same_student,false'],
 

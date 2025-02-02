@@ -205,8 +205,39 @@ return [
         'password' => 'Пароль',
         'login' => 'Логин',
         'email' => 'E-mail',
-        'name' => 'Имя',
         'inn' => 'ИНН',
         'kpp' => 'КПП',
+        'number' => 'Номер запроса',
+
+        'status' => 'Статус',
+        'education_type' => 'Форма обучения',
+        'pickup_type' => 'Вид запроса',
+
+        'surname' => 'Фамилия',
+        'name' => 'Имя',
+        'lastname' => 'Отчество',
+
+        'phone' => 'Номер телефона',
+
+        'birthdate' => 'Дата рождения',
+        'doc_type' => 'Документ',
+        'doc_number' => 'Серия и номер документа',
+        'doc_date' => 'Дата выдачи',
+        'contract_number' => 'Номер договора',
+        'contract_date' => 'Дата договора',
+        'contract_cost' => 'Сумма расходов',
+        'contract_year' => 'Отчетный год',
+
+        'student_surname' => 'Фамилия',
+        'student_name' => 'Имя',
+        'student_lastname' => 'Отчество',
+
+        'student_phone' => 'Номер телефона',
+
+        'student_inn' => 'ИНН',
+        'student_birthdate' => 'Дата рождения',
+        'student_doc_type' => 'Документ',
+        'student_doc_number' => 'Серия и номер документа',
+        'student_doc_date' => 'Дата выдачи',
     ],
 ];
