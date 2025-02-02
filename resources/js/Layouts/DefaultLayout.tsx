@@ -2,6 +2,7 @@ import {PropsWithChildren} from "react";
 import {Header} from "@/Parts";
 import {Head, usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
+import {Toaster} from "react-hot-toast";
 
 export default function DefaultLayout({children}: PropsWithChildren) {
   const {title} = usePage<PageProps>().props;
@@ -13,5 +14,13 @@ export default function DefaultLayout({children}: PropsWithChildren) {
     <div className="page-content">
       {children}
     </div>
+    <Toaster toastOptions={{
+      position: 'bottom-right',
+      style: {
+        background: 'rgba(0,0,0,.7)',
+        backdropFilter: 'blur(10px)',
+        color: '#ffffff'
+      }
+    }}/>
   </div>
 }

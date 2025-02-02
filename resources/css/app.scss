@@ -22,12 +22,7 @@ html {
     min-height: 45px;
   }
   &__link {
-    color: #7a80ff;
-    font-weight: 600;
-    text-decoration: underline;
-    display: flex;
-    align-items: center;
-    column-gap: 10px;
+    @apply text-blue-600 font-bold underline flex items-center gap-x-2;
   }
   &__title {
     font-weight: 600;
@@ -69,6 +64,37 @@ html {
     @apply text-gray-400 duration-200 transition-colors p-1;
     &:hover {
       @apply text-gray-700;
+    }
+  }
+}
+
+.switcher {
+  @apply cursor-pointer flex items-center gap-x-2 relative;
+  line-height: 1;
+  input {
+    @apply absolute opacity-0;
+  }
+  &__check {
+    @apply block bg-gray-200 relative;
+    border-radius: 15px;
+    min-width: 54px;
+    height: 30px;
+    transition: .2s background-color;
+    &:before {
+      content: '';
+      @apply bg-white absolute shadow-sm;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      top: 4px;
+      left: 4px;
+      transition: .2s left;
+    }
+  }
+  input:checked + &__check {
+    @apply bg-blue-400;
+    &:before {
+      left: 27px;
     }
   }
 }
@@ -153,14 +179,21 @@ html {
     }
 
     input,
+    textarea,
     select {
       @apply block rounded border
         border-gray-400 focus:border-gray-600 hover:border-gray-500
         transition-colors duration-200
         outline-none
         py-1 px-2 w-full bg-white;
-      height: 35px;
       font: inherit;
+    }
+    input,
+    select {
+      height: 35px;
+    }
+    textarea {
+      resize: none;
     }
 
     &--error &__label {

@@ -9,24 +9,30 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin RequestModel */
 class RequestResource extends JsonResource
 {
+    public static $wrap = false;
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
+            'number' => $this->number,
             'status' => $this->status,
 
             'name' => $this->name,
             'surname' => $this->surname,
             'lastname' => $this->lastname,
+
+            'email' => $this->email,
             'phone' => $this->phone,
-            'birthdate' => $this->birthdate,
+
+            'birthdate' => $this->birthdate?->format('Y-m-d'),
             'inn' => $this->inn,
+
             'doc_type' => $this->doc_type,
             'doc_number' => $this->doc_number,
             'doc_date' => $this->doc_date,
 
             'contract_number' => $this->contract_number,
-            'contract_date' => $this->contract_date,
+            'contract_date' => $this->contract_date?->format('Y-m-d'),
             'contract_cost' => $this->contract_cost,
             'contract_year' => $this->contract_year,
 
@@ -35,11 +41,16 @@ class RequestResource extends JsonResource
             'student_name' => $this->student_name,
             'student_surname' => $this->student_surname,
             'student_lastname' => $this->student_lastname,
-            'student_birthdate' => $this->student_birthdate,
+
+            'student_birthdate' => $this->student_birthdate?->format('Y-m-d'),
+            'student_inn' => $this->student_inn,
+
             'student_phone' => $this->student_phone,
+
             'student_doc_type' => $this->student_doc_type,
             'student_doc_number' => $this->student_doc_number,
             'student_doc_date' => $this->student_doc_date,
+
             'education_type' => $this->education_type,
             'pickup_type' => $this->pickup_type,
 

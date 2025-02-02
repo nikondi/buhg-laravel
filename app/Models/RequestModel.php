@@ -20,6 +20,23 @@ class RequestModel extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function (self $model) {
+            if(!$model->number) {
+                $model->number = str_pad($model->id, 12, "0", STR_PAD_LEFT);
+                $model->save();
+            }
+        });
+        static::updated(function (self $model) {
+            if(!$model->number) {
+                $model->number = str_pad($model->id, 12, "0", STR_PAD_LEFT);
+            }
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -30,16 +47,22 @@ class RequestModel extends Model
         ];
     }
     protected $fillable = [
+        'number',
+
         'director_id',
         'organization_id',
 
         'status',
         'education_type',
         'pickup_type',
+
         'surname',
         'name',
         'lastname',
+
         'phone',
+        'email',
+
         'birthdate',
         'inn',
         'doc_type',

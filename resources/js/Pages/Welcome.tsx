@@ -8,7 +8,7 @@ export default function Welcome({requests}: TWelcomePage) {
     <HeaderActions/>
 
     <div className="container">
-      <table className="simple-table my-4">
+      <table className="simple-table my-4 text-sm">
         <thead>
         <tr>
           <th>Номер<br />справки</th>

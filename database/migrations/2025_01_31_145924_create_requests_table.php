@@ -9,6 +9,9 @@ return new class extends Migration {
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
+            $table->char('number', 12)
+                ->nullable()
+                ->unique();
 
             $table->foreignId('director_id')
                 ->nullable()
@@ -28,9 +31,12 @@ return new class extends Migration {
             $table->string('surname', 31);
             $table->string('name', 31);
             $table->string('lastname', 31)->nullable();
+
             $table->char('phone', 10);
+            $table->string('email', 31);
             $table->date('birthdate');
             $table->string('inn', 12);
+
             $table->tinyInteger('doc_type');
             $table->string('doc_number', 31);
             $table->string('doc_date');
@@ -47,6 +53,7 @@ return new class extends Migration {
             $table->string('student_lastname', 31)->nullable();
             $table->char('student_phone', 10)->nullable();
             $table->date('student_birthdate')->nullable();
+            $table->string('student_inn', 12)->nullable();
             $table->tinyInteger('student_doc_type')->nullable();
             $table->string('student_doc_number', 31)->nullable();
             $table->string('student_doc_date')->nullable();

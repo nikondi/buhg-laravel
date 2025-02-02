@@ -1,10 +1,10 @@
-import {IRequest} from "@/types";
+import {IRequestRow} from "@/types";
 import {Icon} from "@/Components";
-import {router} from "@inertiajs/react";
+import {Link, router} from "@inertiajs/react";
 import Status from "./Status";
 
 type Props = {
-  request?: IRequest
+  request?: IRequestRow
 }
 
 export default function RequestRow({request}: Props) {
@@ -16,7 +16,7 @@ export default function RequestRow({request}: Props) {
       preserveScroll: true
     });
   }
-  return <tr className="director-form">
+  return <tr>
     <td>{request.id}</td>
     <td>{request.surname} {request.name} {request.lastname}</td>
     <td className="text-center">{request.inn}</td>
@@ -29,11 +29,11 @@ export default function RequestRow({request}: Props) {
     <td>
       <div className="flex gap-x-1 justify-end">
         <button onClick={onDelete} className="director-form__button">
-          <Icon icon="trash" size="1.2em"/>
+          <Icon icon="trash" size="1.15em"/>
         </button>
-        <button className="director-form__button">
+        <Link href={route('request.edit', [request.id])} className="director-form__button">
           <Icon icon="edit"/>
-        </button>
+        </Link>
       </div>
     </td>
   </tr>
