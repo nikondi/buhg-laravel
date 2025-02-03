@@ -180,7 +180,7 @@ class RequestExportController extends Controller
             $exploded_contract_cost[1] ?? '00'
         );
         $request_data = [
-            'number' => mb_str_pad($request->number, 12, '0', STR_PAD_LEFT),
+            'number' => mb_str_pad($request->number ?? $request->id, 12, '0', STR_PAD_LEFT),
             'corrections' => mb_str_pad($historyCount, 3, '-'),
             'report_year' => mb_str_pad($request->report_year, 4, '-'),
             'contract_cost' => $contract_cost,

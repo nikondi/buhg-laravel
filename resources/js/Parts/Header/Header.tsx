@@ -9,6 +9,7 @@ export default function Header() {
           <Link href={route('welcome')}>Справки об оплате образовательных услуг</Link>
         </div>
         <div className="header-menu">
+          <Link href={route('user.index')} className="header-menu__link">Пользователи</Link>
           <Link href={route('director.index')} className="header-menu__link">Директора ОО</Link>
           <Link href={route('organization.index')} className="header-menu__link">Организации</Link>
           <UserMenu/>
