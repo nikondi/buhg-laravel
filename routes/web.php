@@ -16,7 +16,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('director', DirectorController::class);
     Route::resource('organization', OrganizationController::class);
 
-    Route::resource('user', UserController::class);
+    Route::resource('user', UserController::class)
+        ->middleware(['hasRole:admin']);
 
     Route::resource('request', RequestController::class);
     Route::get('/request/{request}/history', [RequestController::class, 'history'])->name('request.history');

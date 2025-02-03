@@ -1,6 +1,6 @@
 import {FormEventHandler} from "react";
 import {useForm} from "@inertiajs/react";
-import {Input} from "@/Components/Form";
+import {Input, Select} from "@/Components/Form";
 import {Button} from "@/Components";
 
 type Props = {
@@ -14,6 +14,7 @@ export default function Create({decline}: Props) {
     login: '',
     password: '',
     password_confirmation: '',
+    role: 'manager',
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -33,6 +34,10 @@ export default function Create({decline}: Props) {
     <div className="flex flex-wrap gap-x-3 mb-2">
       <Input label="Пароль" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} error={errors.password} required/>
       <Input label="Подтверждение пароля" type="password" value={data.password_confirmation} onChange={(e) => setData('password_confirmation', e.target.value)} error={errors.password_confirmation} required/>
+      <Select label="Роль" value={data.role} onChange={(e) => setData('role', e.target.value)}>
+        <option value="admin">Администратор</option>
+        <option value="manager">Менеджер</option>
+      </Select>
     </div>
     <div className="mt-4 flex gap-x-3">
       <Button type="submit" className="!w-[200px]">Добавить</Button>

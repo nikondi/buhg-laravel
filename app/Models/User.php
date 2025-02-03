@@ -22,7 +22,23 @@ class User extends Authenticatable
         'login',
         'email',
         'password',
+        'role',
     ];
+
+    public function hasRole(string|array $role): bool
+    {
+        $has = false;
+        if(is_string($role))
+            $role = [$role];
+
+        foreach($role as $r) {
+            if($this->role == $r) {
+                $has = true;
+                break;
+            }
+        }
+        return $has;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

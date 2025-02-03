@@ -3,7 +3,7 @@ import {FormEventHandler} from "react";
 import {Button} from "@/Components";
 import {IUser} from "@/types";
 import {useForm} from "@inertiajs/react";
-import {Input} from "@/Components/Form";
+import {Input, Select} from "@/Components/Form";
 import toast from "react-hot-toast";
 
 type Props = {
@@ -17,6 +17,7 @@ export default function Index({user}: Props) {
     login: user.login,
     password: '',
     password_confirmation: '',
+    role: user.role
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -48,6 +49,10 @@ export default function Index({user}: Props) {
           <Input label="Подтверждение пароля" type="password" value={data.password_confirmation}
                  onChange={(e) => setData('password_confirmation', e.target.value)} error={errors.password_confirmation}
                  required/>
+          <Select label="Роль" value={data.role} onChange={(e) => setData('role', e.target.value as IUser['role'])}>
+            <option value="admin">Администратор</option>
+            <option value="manager">Менеджер</option>
+          </Select>
         </div>
         <div className="mt-4 flex gap-x-3">
           <Button type="submit" className="!w-[200px]">Сохранить</Button>
