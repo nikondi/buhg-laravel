@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy(RequestObserver::class)]
 class RequestModel extends Model
 {
-    public $timestamps = false;
     protected $table = 'requests';
 
     public function director(): BelongsTo

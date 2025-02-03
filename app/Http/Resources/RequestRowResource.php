@@ -14,6 +14,7 @@ class RequestRowResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'number' => $this->number,
             'status' => $this->status,
 
             'name' => $this->name,

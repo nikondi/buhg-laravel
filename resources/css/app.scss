@@ -99,6 +99,37 @@ html {
   }
 }
 
+.page-selector {
+  @apply flex gap-x-1;
+  &__page {
+    @apply block rounded px-3 py-1 bg-gray-200 transition-colors hover:bg-gray-300;
+    &--select {
+      @apply bg-blue-500 hover:bg-blue-500 text-white cursor-default;
+    }
+  }
+  &__back {
+    @apply block rounded px-3 py-1 bg-gray-200 transition-colors hover:bg-gray-300;
+    &--disabled {
+      @apply hover:bg-gray-300 pointer-events-none cursor-default opacity-50;
+    }
+    &:before {
+      content: '<';
+    }
+  }
+  &__next {
+    @apply block rounded px-3 py-1 bg-gray-200 transition-colors hover:bg-gray-300;
+    &--disabled {
+      @apply hover:bg-gray-300 pointer-events-none cursor-default opacity-50;
+    }
+    &:before {
+      content: '>';
+    }
+  }
+  &__pages-wrapper {
+    @apply flex gap-x-1;
+  }
+}
+
 @layer utilities {
   .header {
     &-top {

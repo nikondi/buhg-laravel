@@ -93,6 +93,7 @@ export interface IRequest {
 
 export interface IRequestRow {
   id: number
+  number: string
   status: TRequestStatus
   name: string
   surname: string

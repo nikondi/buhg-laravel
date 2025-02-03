@@ -17,7 +17,7 @@ export default function RequestRow({request}: Props) {
     });
   }
   return <tr>
-    <td>{request.id}</td>
+    <td>{request.number || request.id}</td>
     <td>{request.surname} {request.name} {request.lastname}</td>
     <td className="text-center">{request.inn}</td>
     <td className="text-center">+7 {request.phone}</td>

@@ -57,6 +57,8 @@ return new class extends Migration {
             $table->tinyInteger('student_doc_type')->nullable();
             $table->string('student_doc_number', 31)->nullable();
             $table->string('student_doc_date')->nullable();
+
+            $table->timestamps();
         });
     }
 
