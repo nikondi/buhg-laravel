@@ -24,7 +24,8 @@ return new class extends Migration {
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->string('status', 15);
+            $table->string('status', 15)
+                ->default('new');
             $table->string('education_type');
             $table->string('pickup_type');
 

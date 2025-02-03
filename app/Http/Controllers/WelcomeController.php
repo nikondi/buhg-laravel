@@ -26,7 +26,7 @@ class WelcomeController extends Controller
         if(!empty($filters['year']))
             $query->where('report_year', $filters['year']);
 
-        $requests = $query->paginate(1)
+        $requests = $query->paginate(30)
             ->withQueryString();
 
         $years = RequestModel::query()->distinct()->select('report_year')->pluck('report_year');
