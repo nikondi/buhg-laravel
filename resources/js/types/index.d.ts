@@ -103,6 +103,7 @@ export interface IRequestRow {
   contract_cost: string
   contract_number: string
   contract_date: string
+  pickup_type: 'pickup' | 'send'
 }
 
 export interface IDirector {

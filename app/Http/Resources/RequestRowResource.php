@@ -21,6 +21,7 @@ class RequestRowResource extends JsonResource
             'lastname' => $this->lastname,
             'phone' => $this->phone,
             'inn' => $this->inn,
+            'pickup_type' => $this->pickup_type,
 
             'report_year' => $this->report_year,
             'contract_cost' => $this->contract_number,

@@ -28,6 +28,14 @@ export default function RequestRow({request}: Props) {
     <td className="text-center"><Status status={request.status}/></td>
     <td>
       <div className="flex gap-x-1 justify-end">
+        {request.pickup_type == 'pickup'
+          ? <a target="_blank" href={route('request.excel', [request.id])} className="director-form__button">
+            <Icon icon="excel" size="1.2em"/>
+          </a>
+          : <a target="_blank" href={route('request.xml', [request.id])} className="director-form__button">
+            <Icon icon="xml" size="1.2em"/>
+          </a>
+        }
         <button onClick={onDelete} className="director-form__button">
           <Icon icon="trash" size="1.15em"/>
         </button>
