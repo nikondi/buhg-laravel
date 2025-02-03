@@ -23,6 +23,7 @@ class RequestController extends Controller
     }
 
     public function edit(RequestModel $request) {
+        $request->loadCount('history');
         $directors = Director::all();
         $organizations = Organization::all();
         $documents = DocumentType::getLabels();
@@ -40,13 +41,15 @@ class RequestController extends Controller
     }
 
     public function update(RequestModel $request, RequestUpdateRequest $_request) {
-        $request->update($_request->except('comment'));
+        $request->update($_request->except(['comment', 'save_history']));
 
-        History::create([
-            'request_id' => $request->id,
-            'user_id' => $_request->user()->id,
-            'comment' => $_request->get('comment'),
-        ]);
+        if($_request->get('save_history')) {
+            History::create([
+                'request_id' => $request->id,
+                'user_id' => $_request->user()->id,
+                'comment' => $_request->get('comment'),
+            ]);
+        }
 
         return back();
     }
@@ -54,6 +57,7 @@ class RequestController extends Controller
     public function history($request) {
         $history = History::query()
             ->where('request_id', $request)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return HistoryResource::collection($history);

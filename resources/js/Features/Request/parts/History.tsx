@@ -15,7 +15,7 @@ export default function History({requestId}: Props) {
 
   const load = () => {
     setOpened((prev) => !prev);
-    if(histories)
+    if(histories || loading)
       return;
 
     setLoading(true);

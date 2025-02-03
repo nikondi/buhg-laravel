@@ -73,7 +73,7 @@ export interface IRequest {
   contract_number: string
   contract_date: string
   contract_cost: string
-  contract_year: string
+  report_year: string
   same_student: boolean
   student_name: string
   student_surname: string
@@ -88,6 +88,7 @@ export interface IRequest {
   pickup_type: string
   director_id: number
   organization_id: number
+  history_count: number
 }
 
 export interface IRequestRow {
@@ -98,7 +99,7 @@ export interface IRequestRow {
   lastname: string
   phone: string
   inn: string
-  contract_year: string
+  report_year: string
   contract_cost: string
   contract_number: string
   contract_date: string

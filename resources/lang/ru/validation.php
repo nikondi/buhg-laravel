@@ -226,7 +226,7 @@ return [
         'contract_number' => 'Номер договора',
         'contract_date' => 'Дата договора',
         'contract_cost' => 'Сумма расходов',
-        'contract_year' => 'Отчетный год',
+        'report_year' => 'Отчетный год',
 
         'student_surname' => 'Фамилия',
         'student_name' => 'Имя',

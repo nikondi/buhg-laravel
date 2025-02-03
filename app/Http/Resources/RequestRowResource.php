@@ -22,7 +22,7 @@ class RequestRowResource extends JsonResource
             'phone' => $this->phone,
             'inn' => $this->inn,
 
-            'contract_year' => $this->contract_year,
+            'report_year' => $this->report_year,
             'contract_cost' => $this->contract_number,
             'contract_number' => $this->contract_number,
             'contract_date' => $this->contract_date->format('d.m.Y'),

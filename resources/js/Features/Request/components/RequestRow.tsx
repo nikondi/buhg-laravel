@@ -21,7 +21,7 @@ export default function RequestRow({request}: Props) {
     <td>{request.surname} {request.name} {request.lastname}</td>
     <td className="text-center">{request.inn}</td>
     <td className="text-center">+7 {request.phone}</td>
-    <td className="text-center">{request.contract_year}</td>
+    <td className="text-center">{request.report_year}</td>
     <td className="text-center">{request.contract_cost}</td>
     <td className="text-center">{request.contract_number}</td>
     <td className="text-center">{request.contract_date}</td>

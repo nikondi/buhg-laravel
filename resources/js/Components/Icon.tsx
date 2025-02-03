@@ -1,6 +1,6 @@
 type Props = {
   size?: string|number
-  icon: 'plus' | 'close' | 'edit' | 'trash' | 'check'
+  icon: 'plus' | 'close' | 'edit' | 'trash' | 'check' | 'excel' | 'xml'
 }
 
 export default function Icon({size = '1em', icon}: Props) {

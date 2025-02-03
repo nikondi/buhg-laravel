@@ -44,7 +44,7 @@ return new class extends Migration {
             $table->string('contract_number', 20);
             $table->string('contract_date');
             $table->float('contract_cost');
-            $table->string('contract_year');
+            $table->string('report_year');
 
             $table->boolean('same_student');
 

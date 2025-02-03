@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\EducationType;
 use App\Observers\RequestObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy(RequestObserver::class)]
 class RequestModel extends Model
@@ -23,13 +25,21 @@ class RequestModel extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    public function history(): HasMany
+    {
+        return $this->hasMany(History::class, 'request_id');
+    }
+
 
     protected function casts(): array
     {
         return [
+            'education_type' => EducationType::class,
             'same_student' => 'boolean',
             'student_birthdate' => 'date',
             'birthdate' => 'date',
+            'doc_date' => 'date',
+            'student_doc_date' => 'date',
             'contract_date' => 'date',
         ];
     }
@@ -58,7 +68,7 @@ class RequestModel extends Model
         'contract_number',
         'contract_date',
         'contract_cost',
-        'contract_year',
+        'report_year',
 
         'same_student',
 

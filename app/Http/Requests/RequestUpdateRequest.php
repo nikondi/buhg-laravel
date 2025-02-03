@@ -28,7 +28,7 @@ class RequestUpdateRequest extends FormRequest
             'contract_number' => ['required'],
             'contract_date' => ['required', 'date'],
             'contract_cost' => ['required', 'numeric'],
-            'contract_year' => ['required', 'integer', 'between:2000,2200'],
+            'report_year' => ['required', 'integer', 'between:2000,2200'],
             'same_student' => ['boolean'],
 
             'student_inn' => ['nullable', 'digits_between:10,12', 'required_if:same_student,false'],
@@ -42,6 +42,7 @@ class RequestUpdateRequest extends FormRequest
             'student_doc_date' => ['nullable', 'required_if:same_student,false'],
 
             'comment' => ['nullable'],
+            'save_history' => ['boolean'],
         ];
     }
 

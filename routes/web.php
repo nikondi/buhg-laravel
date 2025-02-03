@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\RequestExportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('request', RequestController::class);
     Route::get('/request/{request}/history', [RequestController::class, 'history'])->name('request.history');
+    Route::get('/request/{request}/xml', [RequestExportController::class, 'xml'])->name('request.xml');
+    Route::get('/request/{request}/excel', [RequestExportController::class, 'excel'])->name('request.excel');
 });
 
 Route::middleware(['guest'])->group(function () {

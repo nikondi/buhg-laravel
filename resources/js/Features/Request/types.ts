@@ -24,7 +24,7 @@ export type IRequestForm = {
   contract_number: string
   contract_date: string
   contract_cost: string
-  contract_year: string
+  report_year: string
   same_student: boolean
   student_name: string
   student_surname: string
@@ -40,4 +40,5 @@ export type IRequestForm = {
   director_id: number
   organization_id: number
   comment: string
+  save_history: boolean
 }
