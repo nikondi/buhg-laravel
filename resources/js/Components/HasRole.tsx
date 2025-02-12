@@ -8,6 +8,8 @@ type Props = PropsWithChildren<{
 
 export default function HasRole({roles, children}: Props) {
   const {user} = useAuth();
+  if(!user)
+    return;
   if(typeof roles == 'string')
     roles = [roles];
 

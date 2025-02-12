@@ -3,6 +3,7 @@ import {IHistory} from "@/types";
 import axios from "axios";
 import toast from "react-hot-toast";
 import {Link} from "@inertiajs/react";
+import {Button} from "@/Components";
 
 type Props = {
   requestId: number
@@ -13,9 +14,8 @@ export default function History({requestId}: Props) {
   const [opened, setOpened] = useState(false);
   const [histories, setHistories] = useState<IHistory[]>(null);
 
-  const load = () => {
-    setOpened((prev) => !prev);
-    if(histories || loading)
+  const load = (force: boolean = false) => {
+    if((!force && histories) || loading)
       return;
 
     setLoading(true);
@@ -24,13 +24,18 @@ export default function History({requestId}: Props) {
       .catch(() => toast.error('Произошла ошибка'))
       .finally(() => setLoading(false))
   }
+  const handleClick = () => {
+    setOpened((prev) => !prev);
+    load();
+  }
 
   return <>
-    <button onClick={load} className="border-b border-gray-400 mb-5 text-gray-700 hover:text-gray-800 transition-colors duration-300">История изменений</button>
+    <button onClick={handleClick} className="border-b border-gray-400 mb-5 text-gray-700 hover:text-gray-800 transition-colors duration-300">История изменений</button>
     {opened && <div>
       {loading
         ? <div className="bg-gray-200 px-2 py-1 rounded">Загрузка...</div>
         : <div className="pb-6">
+          <Button className="mb-3 !w-auto" onClick={() => load(true)}>Обновить</Button>
           {histories && <table className="simple-table">
             <thead>
             <tr>
