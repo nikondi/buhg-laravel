@@ -22,7 +22,7 @@ class RequestCreateRequest extends FormRequest
             'email' => ['required', 'email'],
             'birthdate' => ['required', 'date'],
             'inn' => ['required'],
-            'doc_type' => ['required', 'integer'],
+            'doc_type' => ['required', 'numeric'],
             'doc_number' => ['required'],
             'doc_date' => ['required', 'date'],
             'contract_number' => ['required'],
@@ -36,7 +36,7 @@ class RequestCreateRequest extends FormRequest
             'student_phone' => ['nullable'],
             'student_birthdate' => ['nullable', 'date'],
             'student_inn' => ['nullable'],
-            'student_doc_type' => ['nullable', 'integer'],
+            'student_doc_type' => ['nullable', 'numeric'],
             'student_doc_number' => ['nullable'],
             'student_doc_date' => ['nullable', 'date'],
         ];
