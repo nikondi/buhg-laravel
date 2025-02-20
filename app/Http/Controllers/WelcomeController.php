@@ -12,7 +12,15 @@ class WelcomeController extends Controller
     public function __invoke(Request $request)
     {
         $query = RequestModel::query()
-            ->orderByDesc('created_at');
+            ->orderByRaw("(case status
+              when 'new' then 1
+              when 'duplicate' then 2
+              when 'in_work' then 3
+              when 'downloaded_xml' then 4
+              when 'declined' then 5
+              ELSE 6
+              end)")
+            ->orderBy('created_at');
 
         $filters = $request->validate([
             'status' => 'nullable',

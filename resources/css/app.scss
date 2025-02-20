@@ -31,11 +31,32 @@ html {
 }
 
 .header-menu {
-  @apply flex items-center gap-x-2;
+  @apply flex gap-x-2 items-center;
   &__link {
-    @apply text-white p-1;
+    @apply text-gray-300 py-1 px-2 transition duration-200;
+    border-bottom: 1px solid transparent;
+    &:not(.active):hover {
+      @apply border-b-gray-400 text-gray-100;
+    }
+    &.active {
+      @apply border-b-gray-300 text-white;
+    }
   }
 }
+
+.header {
+  &-top {
+    @apply px-3 bg-cyan-800;
+    .container {
+      @apply flex justify-between;
+    }
+  }
+
+  &__logo {
+    @apply text-xl text-white py-3;
+  }
+}
+
 
 .simple-table {
   width: 100%;
@@ -131,27 +152,27 @@ html {
 }
 
 @layer utilities {
-  .header {
-    &-top {
-      @apply p-3 bg-cyan-800;
-      .container {
-        @apply flex items-center justify-between;
-      }
-    }
-
-    &__logo {
-      @apply text-2xl text-white;
-    }
-  }
 
 
   .header-user {
-    @apply relative;
+    @apply relative self-stretch;
     &__name {
-      @apply text-white flex gap-x-2 items-center cursor-pointer p-1;
+      @apply text-white flex gap-x-2 items-center cursor-pointer p-1 px-5 bg-cyan-900 transition-colors duration-200 hover:bg-cyan-950;
+      margin-left: 10px;
+      height: 100%;
       svg {
         font-size: 12px;
         transition: .3s transform;
+      }
+    }
+    &__image {
+      @apply bg-gray-200 flex items-center justify-center;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      img {
+        width: 26px;
+        height: 26px;
       }
     }
 

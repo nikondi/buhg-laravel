@@ -84,6 +84,7 @@ export interface IRequest {
 
 export interface IRequestRow {
   id: number
+  created_at: string
   number: string
   status: TRequestStatus
   name: string

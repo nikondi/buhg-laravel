@@ -22,12 +22,12 @@ export default function UserRow({user}: Props) {
     <td>{user.email}</td>
     <td>
       <div className="flex gap-x-1 justify-end">
-        <button onClick={onDelete} className="director-form__button">
-          <Icon icon="trash" size="1.15em"/>
-        </button>
         <Link href={route('user.edit', [user.id])} className="director-form__button">
           <Icon icon="edit"/>
         </Link>
+        <button onClick={onDelete} className="director-form__button">
+          <Icon icon="trash" size="1.15em"/>
+        </button>
       </div>
     </td>
   </tr>

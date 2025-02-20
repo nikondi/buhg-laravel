@@ -2,6 +2,7 @@ import {IRequestRow} from "@/types";
 import {Icon} from "@/Components";
 import {Link, router} from "@inertiajs/react";
 import Status from "./Status";
+import {number_format} from "@/helpers";
 
 type Props = {
   request?: IRequestRow
@@ -22,10 +23,11 @@ export default function RequestRow({request}: Props) {
     <td className="text-center">{request.inn}</td>
     <td className="text-center">+7 {request.phone}</td>
     <td className="text-center">{request.report_year}</td>
-    <td className="text-center">{request.contract_cost}</td>
+    <td className="text-center">{number_format(parseFloat(request.contract_cost), 2, '.', ' ')}</td>
     <td className="text-center">{request.contract_number}</td>
     <td className="text-center">{request.contract_date}</td>
     <td className="text-center"><Status status={request.status}/></td>
+    <td className="text-center">{request.created_at}</td>
     <td>
       <div className="flex gap-x-1 justify-end">
         {request.pickup_type == 'pickup'
@@ -36,12 +38,12 @@ export default function RequestRow({request}: Props) {
             <Icon icon="xml" size="1.2em"/>
           </a>
         }
-        <button onClick={onDelete} className="director-form__button">
-          <Icon icon="trash" size="1.15em"/>
-        </button>
         <Link href={route('request.edit', [request.id])} className="director-form__button">
           <Icon icon="edit"/>
         </Link>
+        <button onClick={onDelete} className="director-form__button">
+          <Icon icon="trash" size="1.15em"/>
+        </button>
       </div>
     </td>
   </tr>

@@ -64,6 +64,7 @@ export default function Welcome({requests, statuses, years, filters: _filters}: 
           <th>Номер<br/>договора</th>
           <th>Дата<br/>договора</th>
           <th>Статус</th>
+          <th>Дата создания</th>
           <th style={{width: 75}}></th>
         </tr>
         </thead>

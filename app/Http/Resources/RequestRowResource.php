@@ -28,6 +28,7 @@ class RequestRowResource extends JsonResource
             'contract_cost' => $this->contract_number,
             'contract_number' => $this->contract_number,
             'contract_date' => $this->contract_date->format('d.m.Y'),
+            'created_at' => $this->created_at->format('d.m.Y H:i'),
         ];
     }
 }
