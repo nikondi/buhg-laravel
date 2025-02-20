@@ -35,6 +35,17 @@ export function number_format(number: number, decimals = 0, dec_point = '.', tho
 
   return sign + ch_first + ch_rest + ch_last;
 }
+export function formatPrice(price: string|number) {
+  if(typeof price == 'string')
+    price = parseFloat(price);
+
+  let result = number_format(price, 2, '.', ' ');
+  if(result.endsWith('.00'))
+    result = result.substring(0, result.length - 3);
+
+  return result;
+
+}
 
 
 export function formatPhone(phone: string) {
