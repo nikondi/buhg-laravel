@@ -1,8 +1,8 @@
 import {IRequestRow} from "@/types";
-import {Icon} from "@/Components";
+import {CopyText, Icon} from "@/Components";
 import {Link, router} from "@inertiajs/react";
 import Status from "./Status";
-import {number_format} from "@/helpers";
+import {formatPhone, number_format} from "@/helpers";
 
 type Props = {
   request?: IRequestRow
@@ -20,8 +20,8 @@ export default function RequestRow({request}: Props) {
   return <tr>
     <td>{request.number || request.id}</td>
     <td>{request.surname} {request.name} {request.lastname}</td>
-    <td className="text-center">{request.inn}</td>
-    <td className="text-center">+7 {request.phone}</td>
+    <td className="text-center"><CopyText text={request.inn}>{request.inn}</CopyText></td>
+    <td className="text-center"><CopyText text={'+7'+request.phone}>{formatPhone(request.phone)}</CopyText></td>
     <td className="text-center">{request.report_year}</td>
     <td className="text-center">{number_format(parseFloat(request.contract_cost), 2, '.', ' ')}</td>
     <td className="text-center">{request.contract_number}</td>

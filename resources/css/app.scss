@@ -151,6 +151,13 @@ html {
   }
 }
 
+.copy-phone {
+  cursor: pointer;
+  border-bottom: 1px dotted #222;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
 @layer utilities {
 
 

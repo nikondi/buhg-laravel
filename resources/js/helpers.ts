@@ -35,3 +35,12 @@ export function number_format(number: number, decimals = 0, dec_point = '.', tho
 
   return sign + ch_first + ch_rest + ch_last;
 }
+
+
+export function formatPhone(phone: string) {
+  const cleaned = phone.replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
+  if (match)
+    return '+7 (' + match[1] + ') ' + match[2] + '-' + match[3] + '-' + match[4];
+  return '+7 '+phone;
+}
