@@ -21,7 +21,7 @@ class RequestUpdateRequest extends FormRequest
             'phone' => ['required', 'digits:10'],
             'email' => ['required', 'email', 'ends_with:.ru'],
             'birthdate' => ['required', 'date'],
-            'inn' => ['required', 'digits_between:10,12'],
+            'inn' => ['required', 'digits:12'],
             'doc_type' => ['required', 'numeric'],
             'doc_number' => ['required'],
             'doc_date' => ['required'],
@@ -31,7 +31,7 @@ class RequestUpdateRequest extends FormRequest
             'report_year' => ['required', 'integer', 'between:2000,2200'],
             'same_student' => ['boolean'],
 
-            'student_inn' => ['nullable', 'digits_between:10,12', 'required_if:same_student,false'],
+            'student_inn' => ['nullable', 'digits:12', 'required_if:same_student,false'],
             'student_surname' => ['nullable', 'required_if:same_student,false'],
             'student_name' => ['nullable', 'required_if:same_student,false'],
             'student_lastname' => ['nullable', 'required_if:same_student,false'],

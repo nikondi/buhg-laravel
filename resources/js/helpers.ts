@@ -55,3 +55,32 @@ export function formatPhone(phone: string) {
     return '+7 (' + match[1] + ') ' + match[2] + '-' + match[3] + '-' + match[4];
   return '+7 '+phone;
 }
+
+export function copyToClipboard(textToCopy: string) {
+  // Navigator clipboard api needs a secure context (https)
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(textToCopy);
+  } else {
+    // Use the 'out of viewport hidden text area' trick
+    const textArea = document.createElement("textarea");
+    textArea.value = textToCopy;
+
+    // Move textarea out of the viewport so it's not visible
+    textArea.style.position = "absolute";
+    textArea.style.left = "-999999px";
+
+    document.body.prepend(textArea);
+    return new Promise((resolve, reject) => {
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
+        resolve('success');
+      } catch (error) {
+        reject(error);
+      } finally {
+        textArea.remove();
+      }
+    })
+  }
+}

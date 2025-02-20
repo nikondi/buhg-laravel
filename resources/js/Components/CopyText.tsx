@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import {PropsWithChildren} from "react";
+import {copyToClipboard} from "@/helpers";
 
 type Props = PropsWithChildren<{
   text: string
@@ -7,9 +8,14 @@ type Props = PropsWithChildren<{
 
 export default function CopyText({text, children}: Props) {
   const copy = () => {
-    navigator.clipboard.writeText(text)
-      .then(()  => toast.success('Текст скопирован'))
-      .catch(() => toast.error('Ошибка при копировании'));
+    try {
+      copyToClipboard(text)
+        .then(() => toast.success('Текст скопирован'))
+        .catch(() => toast.error('Ошибка при копировании'));
+    }
+    catch (e) {
+      toast.error('Ошибка при копировании')
+    }
   }
   return <span className="copy-phone" onClick={copy}>
     {children}
