@@ -9,8 +9,8 @@
 @if($request->number != $old_request->number)
     <p><b>Новый номер:</b> #{{ $request->number }}</p>
 @endif
-@if($request->status != $old_request->status)
-    <p><b>Новый статус:</b> #{{ $request->status->label() }}</p>
+@if($request->status->value != $old_request->status->value)
+    <p><b>Новый статус:</b> {{ $request->status->label() }}</p>
 @endif
 @if(!empty($history->comment))
     <p><b>Комментарий:</b></p>
