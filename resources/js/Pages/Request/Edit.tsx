@@ -113,7 +113,7 @@ function Sidebar() {
     </Select>
     <Input type="number" min={2000} max={2200} label="Отчетный год" name="report_year"/>
 
-    <Select label="Образовательная организация" name="status">
+    <Select label="Статус заявки" name="status">
       {statuses.map(({key, value}) => <option key={key} value={key}>{value}</option>)}
     </Select>
 

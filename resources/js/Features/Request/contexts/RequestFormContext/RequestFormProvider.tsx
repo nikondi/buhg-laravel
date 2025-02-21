@@ -55,8 +55,11 @@ export default function RequestForm({request, children, className}: Props) {
     const toast_id = toast.loading('Сохранение');
     put(route('request.update', [request.id]), {
       onSuccess: ({props}) => {
-        setData(getRequestFormData(props.request as IRequest))
+        setData(getRequestFormData(props.request as IRequest));
         toast.success('Запрос сохранен');
+      },
+      onError: () => {
+        toast.error('Произошла ошибка. Проверьте введённые поля');
       },
       onFinish: () => {
         toast.dismiss(toast_id);

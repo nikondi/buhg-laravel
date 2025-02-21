@@ -8,10 +8,12 @@ use App\Enums\RequestStatus;
 use App\Http\Requests\RequestUpdateRequest;
 use App\Http\Resources\HistoryResource;
 use App\Http\Resources\RequestResource;
+use App\Mail\RequestChangedMail;
 use App\Models\Director;
 use App\Models\History;
 use App\Models\Organization;
 use App\Models\RequestModel;
+use Mail;
 
 class RequestController extends Controller
 {
@@ -41,14 +43,18 @@ class RequestController extends Controller
     }
 
     public function update(RequestModel $request, RequestUpdateRequest $_request) {
+        $old_request = clone $request;
         $request->update($_request->except(['comment', 'save_history']));
 
         if($_request->get('save_history')) {
-            History::create([
+            $history = History::create([
                 'request_id' => $request->id,
                 'user_id' => $_request->user()->id,
                 'comment' => $_request->get('comment'),
             ]);
+            if(!empty($request->email)) {
+                Mail::to($request->email)->send(new RequestChangedMail($old_request, $request, $history));
+            }
         }
 
         return back();

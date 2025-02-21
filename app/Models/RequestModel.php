@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EducationType;
+use App\Enums\RequestStatus;
 use App\Observers\RequestObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +35,7 @@ class RequestModel extends Model
     {
         return [
             'education_type' => EducationType::class,
+            'status' => RequestStatus::class,
             'same_student' => 'boolean',
             'student_birthdate' => 'date',
             'birthdate' => 'date',

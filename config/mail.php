@@ -113,4 +113,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'admin_email' => explode(',', env('MAIL_ADMIN_EMAIL', 'nikondi@narod.ru')),
+
 ];
