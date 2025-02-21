@@ -61,9 +61,23 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'driver' => 'ldap',
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            'rules' => [],
+            'database' => [
+                'model' => App\Models\User::class,
+                'sync_passwords' => false,
+                'sync_attributes' => [
+                    'name' => 'cn',
+                    'login' => 'mail',
+                ],
+            ],
         ],
+
+        // 'users' => [
+        //    'driver' => 'eloquent',
+        //    'model' => env('AUTH_MODEL', App\Models\User::class),
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',
