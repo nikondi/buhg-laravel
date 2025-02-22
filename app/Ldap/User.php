@@ -14,5 +14,5 @@ class User extends Model implements Authenticatable
      */
     public static array $objectClasses = [];
 
-    protected string $guidKey = 'uuid';
+    protected string $guidKey = 'guid';
 }
