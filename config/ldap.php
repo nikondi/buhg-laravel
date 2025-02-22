@@ -29,7 +29,7 @@ return [
     'connections' => [
 
         'default' => [
-            'hosts' => [env('LDAP_HOST', '127.0.0.1')],
+            'hosts' => explode(',', env('LDAP_HOST', '127.0.0.1')),
             'username' => env('LDAP_USERNAME', 'cn=user,dc=local,dc=com'),
             'password' => env('LDAP_PASSWORD', 'secret'),
             'port' => env('LDAP_PORT', 389),
@@ -58,8 +58,8 @@ return [
 
     'logging' => [
         'enabled' => env('LDAP_LOGGING', true),
-        'channel' => env('LOG_CHANNEL', 'stack'),
-        'level' => env('LOG_LEVEL', 'info'),
+        'channel' => env('LDAP_LOG_CHANNEL', 'ldap'),
+        'level' => env('LDAP_LOG_LEVEL', 'info'),
     ],
 
     /*
