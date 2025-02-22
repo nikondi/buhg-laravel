@@ -59,6 +59,8 @@ return new class extends Migration {
             $table->string('student_doc_number', 31)->nullable();
             $table->string('student_doc_date')->nullable();
 
+            $table->string('file')->nullable();
+
             $table->timestamps();
         });
     }

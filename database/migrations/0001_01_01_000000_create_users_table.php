@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('login')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('role', 10)->default('manager');
             $table->timestamps();
         });
 
