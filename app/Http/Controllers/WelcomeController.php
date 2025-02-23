@@ -14,11 +14,13 @@ class WelcomeController extends Controller
         $query = RequestModel::query()
             ->orderByRaw("(case status
               when 'new' then 1
-              when 'duplicate' then 2
-              when 'in_work' then 3
-              when 'downloaded_xml' then 4
-              when 'declined' then 5
-              ELSE 6
+              when 'in_work' then 2
+              when 'ready_pickup' then 3
+              when 'duplicate' then 4
+              when 'downloaded_xml' then 5
+              when 'done' then 6
+              when 'declined' then 7
+              ELSE 8
               end)")
             ->orderBy('created_at');
 
@@ -38,14 +40,12 @@ class WelcomeController extends Controller
             ->withQueryString();
 
         $years = RequestModel::query()->distinct()->select('report_year')->pluck('report_year');
-
         return page()
             ->title('Главная')
             ->render('Welcome', [
                 'requests' => RequestRowResource::collection($requests),
-                'labels' => collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $item) => [$item->value => $item->label()]),
                 'years' => $years->map(fn($year) => ['key' => $year, 'value' => $year]),
-                'statuses' => collect(RequestStatus::cases())->map(fn(RequestStatus $status) => ['key' => $status->value, 'value' => $status->label()]),
+                'statuses' => collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $item) => [$item->value => $item->shortLabel()]),
                 'filters' => $filters,
             ]);
     }

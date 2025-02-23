@@ -45,7 +45,7 @@ type setDataByKeyValuePair<TForm> = <K extends keyof TForm>(key: K, value: TForm
 export type setDataFunction<TForm> = setDataByObject<TForm> & setDataByMethod<TForm> & setDataByKeyValuePair<TForm>
 
 
-export type TRequestStatus = 'new' | 'in_work' | 'downloaded_xml' | 'declined' | 'duplicate';
+export type TRequestStatus = 'new' | 'in_work' | 'downloaded_xml' | 'done' | 'declined' | 'duplicate';
 export type TRequestPickup = 'send' | 'pickup';
 
 export interface IRequest {

@@ -119,10 +119,10 @@ export default function ShowPopup({request_id}: Props) {
                   <tr>
                     <td>Контактная информация</td>
                     <td>
-                      <p><CopyContact text={request.email}><a
-                        href={"mailto:" + request.email}>{request.email}</a></CopyContact></p>
-                      <p><CopyContact text={'+7' + request.phone}><a
-                        href={"tel:+7" + request.phone}>{formatPhone(request.phone)}</a></CopyContact></p>
+                      <div><CopyContact text={request.email}><a
+                        href={"mailto:" + request.email}>{request.email}</a></CopyContact></div>
+                      <div><CopyContact text={'+7' + request.phone}><a
+                        href={"tel:+7" + request.phone}>{formatPhone(request.phone)}</a></CopyContact></div>
                     </td>
                   </tr>
                   </tbody>
@@ -157,9 +157,9 @@ export default function ShowPopup({request_id}: Props) {
                     <tr>
                       <td>Контактная информация</td>
                       <td>
-                        <p><CopyContact text={'+7' + request.student_phone}><a
+                        <div><CopyContact text={'+7' + request.student_phone}><a
                           href={"tel:+7" + request.student_phone}>{formatPhone(request.student_phone)}</a></CopyContact>
-                        </p>
+                        </div>
                       </td>
                     </tr>
                     </tbody>

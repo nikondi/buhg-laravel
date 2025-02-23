@@ -1,9 +1,8 @@
-import {IRequestRow, KeyValue, PageProps, ResourceCollection} from "@/types";
+import {IRequestRow, KeyValue, PageProps, ResourceCollection, TRequestStatus} from "@/types";
 
 export type TWelcomePage = PageProps<{
   requests: ResourceCollection<IRequestRow>,
-  labels: Record<string, string>
-  statuses: KeyValue[]
+  statuses: Record<TRequestStatus, string>
   years: KeyValue[]
   filters: {
     search: string

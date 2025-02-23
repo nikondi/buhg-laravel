@@ -9,17 +9,19 @@ type Props = {
 }
 
 export default function Status({status}: Props) {
-  const {labels} = usePage<TWelcomePage>().props;
+  const {statuses} = usePage<TWelcomePage>().props;
 
   const color = useMemo(() => {
     switch (status) {
       case "new":
+        return 'bg-yellow-300';
+      case "downloaded_xml":
+      case "done":
         return 'bg-green-500';
       case "declined":
         return 'bg-red-500';
       case "in_work":
       case "duplicate":
-      case "downloaded_xml":
         return 'bg-cyan-500';
       default:
         return 'bg-gray-400';
@@ -27,6 +29,6 @@ export default function Status({status}: Props) {
   }, [status]);
 
   return <span className={mergeClass("inline-block rounded px-2.5 py-1", color)}>
-    {labels[status] || status}
+    {statuses[status] || status}
   </span>
 }
