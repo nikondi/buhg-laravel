@@ -46,6 +46,7 @@ export type setDataFunction<TForm> = setDataByObject<TForm> & setDataByMethod<TF
 
 
 export type TRequestStatus = 'new' | 'in_work' | 'downloaded_xml' | 'declined' | 'duplicate';
+export type TRequestPickup = 'send' | 'pickup';
 
 export interface IRequest {
   id: number
@@ -76,9 +77,48 @@ export interface IRequest {
   student_doc_number: string
   student_doc_date: string
   education_type: string
-  pickup_type: string
+  pickup_type: TRequestPickup
   director_id: number
   organization_id: number
+  history_count: number
+}
+
+export interface IRequestShow {
+  id: number
+  number: string
+  status: string
+  fio: string
+  email: string
+  phone: string
+  birthdate: string
+  inn: string
+  doc_type: string
+  doc_number: string
+  doc_date: string
+  contract_number: string
+  contract_date: string
+  contract_cost: number
+  report_year: string
+  same_student: boolean
+  student_fio: string
+  student_birthdate: string
+  student_inn: string
+  student_phone: string
+  student_doc_type: string
+  student_doc_number: string
+  student_doc_date: string
+  education_type: string
+  pickup_type_label: string
+  pickup_type: string
+  director: {
+    fio: string
+    type: string
+  }
+  organization: {
+    name: string
+    inn: string
+    kpp: string
+  }
   history_count: number
 }
 

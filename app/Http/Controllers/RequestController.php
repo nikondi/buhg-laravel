@@ -8,12 +8,13 @@ use App\Enums\RequestStatus;
 use App\Http\Requests\RequestUpdateRequest;
 use App\Http\Resources\HistoryResource;
 use App\Http\Resources\RequestResource;
+use App\Http\Resources\RequestShowResource;
 use App\Mail\RequestChangedMail;
 use App\Models\Director;
 use App\Models\History;
 use App\Models\Organization;
 use App\Models\RequestModel;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class RequestController extends Controller
 {
@@ -58,6 +59,15 @@ class RequestController extends Controller
         }
 
         return back();
+    }
+
+    public function show(RequestModel $request)
+    {
+        $request->load(['organization', 'director'])
+            ->loadCount('history');
+
+        return response()
+            ->json(new RequestShowResource($request));
     }
 
     public function history($request) {

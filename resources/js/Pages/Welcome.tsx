@@ -59,7 +59,7 @@ export default function Welcome({requests, statuses, years, filters: _filters}: 
           <th>ФИО плательщика</th>
           <th>ИНН</th>
           <th>Номер<br/>телефона</th>
-          <th>Год</th>
+          <th>Отчетный<br />год</th>
           <th>Сумма</th>
           <th>Номер<br/>договора</th>
           <th>Дата<br/>договора</th>

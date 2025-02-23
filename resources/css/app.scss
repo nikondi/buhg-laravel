@@ -11,6 +11,8 @@ html {
   height: 100%;
 }
 
+@import "components/popup";
+
 
 .header-actions {
   background-color: #ddd;
@@ -120,6 +122,30 @@ html {
   }
 }
 
+.request-show {
+  &__title {
+    @apply text-lg mb-2;
+  }
+}
+
+.request-show-table {
+  @apply w-full border-t border-gray-200;
+  > tbody > tr {
+    @apply border-b border-gray-200 transition-colors duration-200 hover:bg-gray-50;
+    > td {
+      @apply px-3 py-2;
+      vertical-align: top;
+      &:first-child {
+        width: 200px;
+        @apply bg-gray-100 leading-5;
+      }
+    }
+  }
+  a {
+    @apply transition-colors duration-200 underline underline-offset-2 text-blue-600 hover:text-blue-900;
+  }
+}
+
 .page-selector {
   @apply flex gap-x-1;
   &__page {
@@ -157,10 +183,26 @@ html {
   display: inline-block;
   padding-bottom: 2px;
 }
+.copy-contact {
+  @apply inline-flex items-center;
+  button {
+    @apply transition-colors duration-200 text-gray-400 hover:text-gray-700 p-1 self-start ml-1.5;
+  }
+}
+
+.info {
+  border: 2px solid;
+  @apply flex items-center rounded-md border-cyan-600 p-4;
+  &__icon {
+    @apply self-start mr-3 text-cyan-600;
+    font-size: 20px;
+  }
+  &__content {
+    line-height: 1;
+  }
+}
 
 @layer utilities {
-
-
   .header-user {
     @apply relative self-stretch;
     &__name {

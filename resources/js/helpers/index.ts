@@ -56,6 +56,11 @@ export function formatPhone(phone: string) {
   return '+7 '+phone;
 }
 
+export function formatDate(date: string) {
+  const date_obj = new Date(date)
+  return date_obj.toLocaleDateString('ru-RU');
+}
+
 export function copyToClipboard(textToCopy: string) {
   // Navigator clipboard api needs a secure context (https)
   if (navigator.clipboard && window.isSecureContext) {

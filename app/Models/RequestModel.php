@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\DocumentType;
 use App\Enums\EducationType;
+use App\Enums\PickupType;
 use App\Enums\RequestStatus;
 use App\Observers\RequestObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -35,6 +37,7 @@ class RequestModel extends Model
     {
         return [
             'education_type' => EducationType::class,
+            'pickup_type' => PickupType::class,
             'status' => RequestStatus::class,
             'same_student' => 'boolean',
             'student_birthdate' => 'date',
@@ -42,6 +45,8 @@ class RequestModel extends Model
             'doc_date' => 'date',
             'student_doc_date' => 'date',
             'contract_date' => 'date',
+            'doc_type' => DocumentType::class,
+            'student_doc_type' => DocumentType::class,
         ];
     }
     protected $fillable = [

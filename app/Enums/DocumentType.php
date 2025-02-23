@@ -2,8 +2,17 @@
 
 namespace App\Enums;
 
-class DocumentType
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
+use JsonSerializable;
+
+class DocumentType implements CastsAttributes, JsonSerializable
 {
+    public ?string $value = null;
+    public function label() {
+        return static::$labels[$this->value] ?? $this->value;
+    }
+
     public static function getLabels(): array
     {
         return static::$labels;
@@ -25,4 +34,28 @@ class DocumentType
         '07' => 'Военный билет',
         '03' => 'Свидетельство о рождении',
     ];
+
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?static
+    {
+        if($value == null)
+            return null;
+
+        $this->value = $value;
+        return $this;
+    }
+
+    public function set(Model $model, string $key, mixed $value, array $attributes)
+    {
+        return $value;
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
+    public function jsonSerialize(): ?string
+    {
+        return $this->value;
+    }
 }
