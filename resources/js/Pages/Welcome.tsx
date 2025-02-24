@@ -46,7 +46,7 @@ export default function Welcome({requests, statuses, years, filters: _filters}: 
           </Select>
           <Select label="Статус" value={data.status} onChange={(e) => setData('status', e.target.value)}>
             <option value="">-- Не выбрано</option>
-            {statuses.map(({key, value}) => <option key={key} value={key}>{value}</option>)}
+            {Object.entries(statuses).map(([key, value]) => <option key={key} value={key}>{value}</option>)}
           </Select>
           <Button type="submit" className="h-[35px] !w-[150px]">Поиск</Button>
         </form>}
