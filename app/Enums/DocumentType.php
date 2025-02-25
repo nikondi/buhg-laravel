@@ -8,6 +8,7 @@ use JsonSerializable;
 
 class DocumentType implements CastsAttributes, JsonSerializable
 {
+    public ?string $key = null;
     public ?string $value = null;
     public function label() {
         return static::$labels[$this->value] ?? $this->value;
@@ -16,6 +17,13 @@ class DocumentType implements CastsAttributes, JsonSerializable
     public static function getLabels(): array
     {
         return static::$labels;
+    }
+
+    public static function from(string $doc_type): DocumentType
+    {
+        $instance = new self();
+        $instance->value = $doc_type;
+        return $instance;
     }
 
     private static array $labels = [

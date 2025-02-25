@@ -7,7 +7,7 @@ class DocFormatter {
     {
         return match ($doc_code) {
             '21' => self::passport($doc_number),
-            default => $doc_number,
+            default => preg_replace("/[^0-9 ]/", '', $doc_number),
         };
     }
 

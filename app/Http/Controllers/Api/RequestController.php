@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\DocumentType;
 use App\Helpers\DocFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RequestCreateRequest;

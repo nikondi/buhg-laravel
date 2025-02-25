@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\KeyValueDTO;
 use App\Enums\DocumentType;
 use App\Enums\RequestStatus;
+use App\Helpers\DocFormatter;
 use App\Http\Requests\RequestUpdateRequest;
 use App\Http\Resources\HistoryResource;
 use App\Http\Resources\RequestResource;
@@ -44,19 +45,27 @@ class RequestController extends Controller
     }
 
     public function update(RequestModel $request, RequestUpdateRequest $_request) {
-        $old_request = clone $request;
-        $request->update($_request->except(['comment', 'save_history']));
+        $data = $_request->except(['comment', 'save_history']);
+
+        $data['doc_number'] = DocFormatter::from($data['doc_type'], $data['doc_number']);
+        if($data['student_doc_type'] && $data['student_doc_number'])
+            $data['student_doc_number'] = DocFormatter::from($data['student_doc_type'], $data['student_doc_number']);
+
+        $request->fill($data);
+
+//        $history = History::create([
+//            'request_id' => $request->id,
+//            'user_id' => $_request->user()->id,
+//            'comment' => $_request->get('comment'),
+//        ]);
 
         if($_request->get('save_history')) {
-            $history = History::create([
-                'request_id' => $request->id,
-                'user_id' => $_request->user()->id,
-                'comment' => $_request->get('comment'),
-            ]);
-            if(!empty($request->email)) {
-                Mail::to($request->email)->send(new RequestChangedMail($old_request, $request, $history));
+            if(!empty($request->email) && $request->isDirty()) {
+                Mail::to($request->email)->send(new RequestChangedMail($request, $_request->get('comment')));
             }
         }
+
+        $request->save();
 
         return back();
     }

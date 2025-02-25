@@ -1,18 +1,45 @@
 <style>
-    p,
-    pre {
+    .body {
         font-family: sans-serif;
-        font-size: 16px;
+        font-size: 15px;
+        padding: 20px 15px;
+    }
+    pre {
+        font: inherit;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    td,
+    th {
+        border: 1px solid #dddddd;
+        padding: 8px;
+    }
+    td:first-child {
+        width: 175px;
+        font-weight: 500;
+        vertical-align: top;
+    }
+    th {
+        background-color: #dddddd;
     }
 </style>
-
-@if($request->number != $old_request->number)
-    <p><b>Новый номер:</b> #{{ $request->number }}</p>
-@endif
-@if($request->status->value != $old_request->status->value)
-    <p><b>Новый статус:</b> {{ $request->status->label() }}</p>
-@endif
-@if(!empty($history->comment))
-    <p><b>Комментарий:</b></p>
-    <pre>{{ $history->comment }}</pre>
-@endif
+<div class="body">
+    <table>
+        <tbody>
+        <tr>
+            <th colspan="3">Изменения</th>
+        </tr>
+        @foreach($dirty as $item)
+            <tr>
+                <td>{{ $item['label'] }}</td>
+                <td>{{ $item['old_value'] }}</td>
+                <td>{{ $item['value'] }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
