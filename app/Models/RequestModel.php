@@ -39,7 +39,7 @@ class RequestModel extends Model
         return $this->files?array_map(fn($file) => [
             'url' => Storage::disk('requests')->url($this->id.'/'.$file),
             'label' => basename($file),
-        ], $this->file):[];
+        ], $this->files):[];
     }
 
     protected function casts(): array
