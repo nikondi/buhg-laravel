@@ -26,12 +26,27 @@
     th {
         background-color: #dddddd;
     }
+    .first-row td {
+        background-color: #f5f5f5;
+        text-align: center;
+        vertical-align: center;
+    }
 </style>
 <div class="body">
+    @if(!empty($comment))
+        <pre class="comment">
+            {{ $comment }}
+        </pre>
+    @endif
     <table>
         <tbody>
         <tr>
             <th colspan="3">Изменения</th>
+        </tr>
+        <tr class="first-row">
+            <td>Поле</td>
+            <td>Старое значение</td>
+            <td>Новое значение</td>
         </tr>
         @foreach($dirty as $item)
             <tr>

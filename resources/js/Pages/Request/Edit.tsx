@@ -112,7 +112,7 @@ function Sidebar() {
       <option value="send">Отправить в налоговый орган</option>
     </Select>
     <Input type="number" min={2000} max={2200} label="Отчетный год" name="report_year"/>
-    <Input type="number" min={0} max={255} label="Номер правки" name="changes_count"/>
+    <Input type="number" min={0} max={255} label="Номер корректировки" name="changes_count"/>
 
     <Select label="Статус заявки" name="status">
       {statuses.map(({key, value}) => <option key={key} value={key}>{value}</option>)}
