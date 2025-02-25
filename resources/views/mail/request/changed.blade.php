@@ -10,7 +10,7 @@
     table {
         border-collapse: collapse;
         width: 100%;
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
     }
     td,
@@ -30,13 +30,18 @@
         background-color: #f5f5f5;
         text-align: center;
         vertical-align: center;
+        width: 33%;
+    }
+    .comment {
+        padding: 8px;
     }
 </style>
 <div class="body">
     @if(!empty($comment))
-        <pre class="comment">
-            {{ $comment }}
-        </pre>
+        <div>
+            <b>Комментарий</b>
+            <pre class="comment">{{ $comment }}</pre>
+        </div>
     @endif
     <table>
         <tbody>

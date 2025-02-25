@@ -20,7 +20,9 @@ class RequestChangedMail extends Mailable
 
     protected array $dirty;
     protected array $dirty_except = [
-
+        'id', 'uuid',
+        'director_id', 'organization_id',
+        'changes_count',
     ];
 
     /**
@@ -39,9 +41,8 @@ class RequestChangedMail extends Mailable
      */
     public function envelope(): Envelope
     {
-
         return new Envelope(
-            subject: 'Статус заявки #'.($this->dirty['number'] ?? $this->request->number).' изменен',
+            subject: 'Статус заявки #'.($this->request->getOriginal('number') ?? $this->request->number).' изменен',
         );
     }
 
