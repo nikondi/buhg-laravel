@@ -173,7 +173,7 @@ class RequestExportController extends Controller
         $exploded_contract_cost = explode(".", $request->contract_cost);
         $contract_cost = sprintf('%s%s',
             mb_str_pad($exploded_contract_cost[0], 13, '-'),
-            $exploded_contract_cost[1] ?? '00'
+            isset($exploded_contract_cost[1])?mb_str_pad($exploded_contract_cost[1], 2, '0'):'00'
         );
         $request_data = [
             'number' => mb_str_pad($request->number ?? $request->id, 12, '0', STR_PAD_LEFT),

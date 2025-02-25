@@ -25,7 +25,7 @@ class RequestRowResource extends JsonResource
             'pickup_type' => $this->pickup_type,
 
             'report_year' => $this->report_year,
-            'contract_cost' => $this->contract_number,
+            'contract_cost' => $this->contract_cost,
             'contract_number' => $this->contract_number,
             'contract_date' => $this->contract_date->format('d.m.Y'),
             'created_at' => $this->created_at->format('d.m.Y H:i'),

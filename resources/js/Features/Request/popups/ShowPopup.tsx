@@ -73,7 +73,7 @@ export default function ShowPopup({request_id}: Props) {
                         </tr>
                         <tr>
                           <td className="pr-2 py-0.5">Сумма расходов:</td>
-                          <td>{formatPrice(request.contract_number)} <span className="text-orange-500">₽</span></td>
+                          <td>{formatPrice(request.contract_cost)} <span className="text-orange-500">₽</span></td>
                         </tr>
                         <tr>
                           <td className="pr-2 py-0.5">Дата:</td>
