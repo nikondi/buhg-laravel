@@ -9,6 +9,8 @@ return new class extends Migration {
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->index();
+
             $table->char('number', 12)
                 ->nullable()
                 ->unique();
@@ -28,6 +30,10 @@ return new class extends Migration {
                 ->default('new');
             $table->string('education_type');
             $table->string('pickup_type');
+
+            $table->tinyInteger('changes_count')
+                ->unsigned()
+                ->default(0);
 
             $table->string('surname', 31);
             $table->string('name', 31);
@@ -59,7 +65,7 @@ return new class extends Migration {
             $table->string('student_doc_number', 31)->nullable();
             $table->string('student_doc_date')->nullable();
 
-            $table->string('file')->nullable();
+            $table->json('files')->nullable();
 
             $table->timestamps();
         });

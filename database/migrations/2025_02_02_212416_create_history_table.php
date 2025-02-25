@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
 
             $table->foreignId('user_id')
+                ->nullable()
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
@@ -18,7 +19,7 @@ return new class extends Migration {
             $table->foreignId('request_id')
                 ->constrained('requests')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->string('comment')
                 ->nullable();

@@ -9,7 +9,8 @@ return new class extends Migration {
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 63);
+            $table->string('name');
+            $table->string('short_name', 63);
             $table->string('inn', 12);
             $table->string('kpp', 12);
         });
