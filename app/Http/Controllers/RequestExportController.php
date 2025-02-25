@@ -15,25 +15,24 @@ class RequestExportController extends Controller
     public function xml(RequestModel $request)
     {
         $request->load(['director', 'organization']);
-        $historyCount = $request->history()->count();
 
-        $id_file = sprintf("UT_SVOPLOBUCH_%s_%s_%s%s_%s_%s",
+        $filename = sprintf("UT_SPROPLOBUCH_%s_%s_%s%s_%s_",
             config('request_xml.kod_one'),
             config('request_xml.kod_two'),
             $request->organization->inn,
             $request->organization->kpp,
-            date('Ymd'),
-            $request->number
+            date('Ymd')
         );
 
-        $name_document_xml = $id_file . '.xml';
+        $id_file = $filename.$request->uuid;
+        $name_document_xml = $filename.substr($request->uuid, 0, 13) . '.xml';
 
         $current_date_document = date('d.m.Y'); //дата формирования документа
 
         $payer = [
-            'surname' => $request->surname,
-            'name' => $request->name,
-            'lastname' => $request->lastname,
+            'surname' => mb_strtoupper($request->surname),
+            'name' => mb_strtoupper($request->name),
+            'lastname' => mb_strtoupper($request->lastname),
             'birthdate' => $request->birthdate->format('d.m.Y'),
             'doc_date' => $request->doc_date->format('d.m.Y'),
             'doc_type' => $request->doc_type,
@@ -41,9 +40,9 @@ class RequestExportController extends Controller
             'inn' => $request->inn,
         ];
         $student = $request->same_student ? $payer : [
-            'surname' => $request->student_surname,
-            'name' => $request->student_name,
-            'lastname' => $request->student_lastname,
+            'surname' => mb_strtoupper($request->student_surname),
+            'name' => mb_strtoupper($request->student_name),
+            'lastname' => mb_strtoupper($request->student_lastname),
             'birthdate' => $request->student_birthdate->format('d.m.Y'),
             'doc_date' => $request->student_doc_date->format('d.m.Y'),
             'doc_type' => $request->student_doc_type,
@@ -57,18 +56,18 @@ class RequestExportController extends Controller
 
         // Установка атрибутов корневого элемента
         $xml->addAttribute('ИдФайл', $id_file); //название без .xml
-        $xml->addAttribute('ВерсПрог', '1.0'); //не указано, что писать, оставил 1.0
+        $xml->addAttribute('ВерсПрог', '1С:БУХГАЛТЕРИЯ ГОС. УЧРЕЖДЕНИЯ 2.0.101.6');
         $xml->addAttribute('ВерсФорм', '5.01');
 
         // Создаем элемент Документ
         $document = $xml->addChild('Документ');
-        $document->addAttribute('КНД', '1184045');
+        $document->addAttribute('КНД', '1151158');
         $document->addAttribute('ДатаДок', $current_date_document);
-        $document->addAttribute('КодНО', '001'); //неизвестно
+//        $document->addAttribute('КодНО', '001'); //неизвестно
         $document->addAttribute('ОтчГод', $request->report_year);
 
         // Создаем элемент СвНп
-        $svNp = $document->addChild('СвНп');
+        $svNp = $document->addChild('СвНП');
         $npYUL = $svNp->addChild('НПЮЛ');
         $npYUL->addAttribute('НаимОрг', $request->organization->name);
         $npYUL->addAttribute('ИННЮЛ', $request->organization->inn);
@@ -76,58 +75,57 @@ class RequestExportController extends Controller
 
         // Создаем элемент Подписант
         $podpisant = $document->addChild('Подписант');
-        $podpisant->addAttribute('ПрПодп', $request->director->type->value);
-        $fiO = $podpisant->addChild('ФИО');
-        $fiO_type = $fiO->addChild('ФИОТип');
-        $fiO_type->addAttribute('Фамилия', $request->director->surname);
-        $fiO_type->addAttribute('Имя', $request->director->name);
-        $fiO_type->addAttribute('Отчество', $request->director->lastname);
+//        $podpisant->addAttribute('ПрПодп', $request->director->type->value);
+        $fio = $podpisant->addChild('ФИО');
+//        $fiO_type = $fiO->addChild('ФИОТип');
+        $fio->addAttribute('Фамилия', $request->director->surname);
+        $fio->addAttribute('Имя', $request->director->name);
+        $fio->addAttribute('Отчество', $request->director->lastname);
 
         // Создаем элемент СвПред
-        $svPred = $podpisant->addChild('СвПред');
-        $svPred->addAttribute('НаимДок', $request->director->document);
+//        $svPred = $podpisant->addChild('СвПред');
+//        $svPred->addAttribute('НаимДок', $request->director->document);
 
         // Создаем элемент СведОплОбрУсл
-        $svedOp = $document->addChild('СведОплОбрУсл');
-        $svedOp->addAttribute('НомерСвед', $request->number);
-        $svedOp->addAttribute('НомКорр', $historyCount);
-        $svedOp->addAttribute('ПрФормОбуч', $request->education_type->label());
+        $svedOp = $document->addChild('СпрОплОбрУсл');
+        $svedOp->addAttribute('НомерСправ', ltrim($request->number, '0'));
+        $svedOp->addAttribute('НомКорр', $request->changes_count);
+        $svedOp->addAttribute('ПрФормОбуч', $request->education_type == EducationType::FULL_TIME?'1':'0');
         $svedOp->addAttribute('ПрОбуч', $request->same_student ? '1' : '0');
         $svedOp->addAttribute('СуммаРасх', $request->contract_cost);
 
         // Создаем элемент НППлатОбрУсл
         $npPlatOp = $svedOp->addChild('НППлатОбрУсл');
-        $danFIO = $npPlatOp->addChild('ДанФИОТип');
-        $danFIO->addAttribute('ИНН', $payer['inn']);
-        $danFIO->addAttribute('ДатаРожд', $payer['birthdate']);
+        $npPlatOp->addAttribute('ДатаРожд', $payer['birthdate']);
+//        $danFIO = $npPlatOp->addChild('ДанФИОТип');
+//        $danFIO->addAttribute('ИНН', $payer['inn']);
 
         // Создаем элементы ФИО и СвДок
-        $fiOPlat = $danFIO->addChild('ФИО');
-        $fiOPlat_type = $fiOPlat->addChild('ФИОТип');
-        $fiOPlat_type->addAttribute('Фамилия', $payer['surname']);
-        $fiOPlat_type->addAttribute('Имя', $payer['name']);
-        $fiOPlat_type->addAttribute('Отчество', $payer['lastname']);
+        $fiOPlat = $npPlatOp->addChild('ФИО');
+        $fiOPlat->addAttribute('Фамилия', $payer['surname']);
+        $fiOPlat->addAttribute('Имя', $payer['name']);
+        $fiOPlat->addAttribute('Отчество', $payer['lastname']);
 
         // Сведения о документе
-        $svedDok = $danFIO->addChild('СведДок');
+        $svedDok = $npPlatOp->addChild('СведДок');
         $svedDok->addAttribute('КодВидДок', $payer['doc_type']);
         $svedDok->addAttribute('СерНомДок', $payer['doc_number']);
         $svedDok->addAttribute('ДатаДок', $payer['doc_date']);
 
         // Создаем элемент Обучаемый
         $obuchayemy = $svedOp->addChild('Обучаемый');
-        $danFIOObuch = $obuchayemy->addChild('ДанФИОТип');
-        $danFIOObuch->addAttribute('ИНН', $student['inn']);
-        $danFIOObuch->addAttribute('ДатаРожд', $student['birthdate']);
+//        $danFIOObuch = $obuchayemy->addChild('ДанФИОТип');
+//        $danFIOObuch->addAttribute('ИНН', $student['inn']);
+        $obuchayemy->addAttribute('ДатаРожд', $student['birthdate']);
 
         // Создаем элементы ФИО и СвДок для обучаемого
-        $fiOObuch = $danFIOObuch->addChild('ФИО');
-        $fiOObuch_type = $fiOObuch->addChild('ФИОТип');
-        $fiOObuch_type->addAttribute('Фамилия', $student['surname']);
-        $fiOObuch_type->addAttribute('Имя', $student['name']);
-        $fiOObuch_type->addAttribute('Отчество', $student['lastname']);
+        $fiOObuch = $obuchayemy->addChild('ФИО');
+//        $fiOObuch_type = $fiOObuch->addChild('ФИОТип');
+        $fiOObuch->addAttribute('Фамилия', $student['surname']);
+        $fiOObuch->addAttribute('Имя', $student['name']);
+        $fiOObuch->addAttribute('Отчество', $student['lastname']);
 
-        $svedDokObuch = $danFIOObuch->addChild('СведДок');
+        $svedDokObuch = $obuchayemy->addChild('СведДок');
         $svedDokObuch->addAttribute('КодВидДок', $student['doc_type']);
         $svedDokObuch->addAttribute('СерНомДок', $student['doc_number']);
         $svedDokObuch->addAttribute('ДатаДок', $student['doc_date']);
@@ -144,13 +142,11 @@ class RequestExportController extends Controller
     public function excel(RequestModel $request)
     {
         $request->load(['director', 'organization']);
-        $historyCount = $request->history()->count();;
 
         $sourceFilePath = Storage::disk('local')->path('request_template.xls');
-        //$current_date_document_name = date('Ymd');
 
         // МЕНЯЮ ФОРМИРОВАНИЕ НАЗВАНИЯ
-        $name_excel = sprintf('%s_%s_%s_%s.xls',
+        $name_excel = sprintf('%s_%s_%s_%s.xlsx',
             $request->surname,
             $request->name,
             $request->number,
@@ -181,7 +177,7 @@ class RequestExportController extends Controller
         );
         $request_data = [
             'number' => mb_str_pad($request->number ?? $request->id, 12, '0', STR_PAD_LEFT),
-            'corrections' => mb_str_pad($historyCount, 3, '-'),
+            'corrections' => mb_str_pad($request->changes_count, 3, '-'),
             'report_year' => mb_str_pad($request->report_year, 4, '-'),
             'contract_cost' => $contract_cost,
         ];

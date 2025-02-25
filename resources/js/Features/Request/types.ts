@@ -41,4 +41,5 @@ export type IRequestForm = {
   organization_id: number
   comment: string
   save_history: boolean
+  changes_count: number
 }

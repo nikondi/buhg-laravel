@@ -43,6 +43,7 @@ class RequestUpdateRequest extends FormRequest
 
             'comment' => ['nullable'],
             'save_history' => ['boolean'],
+            'changes_count' => ['numeric']
         ];
     }
 

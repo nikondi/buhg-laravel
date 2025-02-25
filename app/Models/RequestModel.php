@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 #[ObservedBy(RequestObserver::class)]
 class RequestModel extends Model
@@ -49,7 +50,20 @@ class RequestModel extends Model
             'student_doc_type' => DocumentType::class,
         ];
     }
+
+    protected static function boot(): void
+    {
+        static::creating(function (RequestModel $model) {
+            if (!$model->uuid) {
+                $model->uuid = Str::uuid()->toString();
+            }
+        });
+
+        parent::boot();
+    }
+
     protected $fillable = [
+        'id', 'uuid',
         'number',
 
         'director_id',
@@ -87,5 +101,7 @@ class RequestModel extends Model
         'student_doc_type',
         'student_doc_number',
         'student_doc_date',
+
+        'changes_count',
     ];
 }

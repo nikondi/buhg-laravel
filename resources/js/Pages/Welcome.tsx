@@ -40,7 +40,7 @@ export default function Welcome({requests, statuses, years, filters: _filters}: 
 
         {filters && <form className="w-full flex gap-x-2 items-end shadow p-3 mt-2 rounded-md" onSubmit={handleSubmit}>
           {/*<Input label="Поиск" value={data.search} onChange={(e) => setData('search', e.target.value)}/>*/}
-          <Select label="Год" value={data.year} onChange={(e) => setData('year', e.target.value)}>
+          <Select label="Отчетный год" value={data.year} onChange={(e) => setData('year', e.target.value)}>
             <option value="">-- Не выбрано</option>
             {years.map(({key, value}) => <option key={key} value={key}>{value}</option>)}
           </Select>

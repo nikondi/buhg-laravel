@@ -81,6 +81,7 @@ export interface IRequest {
   director_id: number
   organization_id: number
   history_count: number
+  changes_count: number
 }
 
 export interface IRequestShow {

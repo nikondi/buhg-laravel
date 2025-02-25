@@ -43,7 +43,8 @@ const getRequestFormData = (request: IRequest): IRequestForm => {
     pickup_type: request.pickup_type || '',
     director_id: request.director_id,
     organization_id: request.organization_id,
-    save_history: true
+    save_history: false,
+    changes_count: request.changes_count
   };
 }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\DocumentType;
+use App\Helpers\DocFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RequestCreateRequest;
 use App\Mail\RequestCreatedMail;
@@ -13,7 +15,13 @@ class RequestController extends Controller
 {
     public function store(RequestCreateRequest $request)
     {
-        $requestModel = RequestModel::create($request->validated());
+        $data = $request->validated();
+
+        $data['doc_number'] = DocFormatter::from($data['doc_type'], $data['doc_number']);
+        if($data['student_doc_type'] && $data['student_doc_number'])
+            $data['student_doc_number'] = DocFormatter::from($data['student_doc_type'], $data['student_doc_number']);
+
+        $requestModel = RequestModel::create($data);
 
         try {
             foreach (config('mail.admin_email') as $email) {
