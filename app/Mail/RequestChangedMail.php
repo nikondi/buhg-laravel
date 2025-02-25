@@ -42,7 +42,7 @@ class RequestChangedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Статус заявки #'.($this->request->getOriginal('number') ?? $this->request->number).' изменен',
+            subject: 'Уведомление о заявке #'.($this->request->getOriginal('number') ?? $this->request->number),
         );
     }
 

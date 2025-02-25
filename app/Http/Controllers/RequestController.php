@@ -60,7 +60,7 @@ class RequestController extends Controller
 //        ]);
 
         if($_request->get('save_history')) {
-            if(!empty($request->email) && $request->isDirty()) {
+            if(!empty($request->email) && ($request->isDirty() || !empty($_request->get('comment')))) {
                 Mail::to($request->email)->send(new RequestChangedMail($request, $_request->get('comment')));
             }
         }

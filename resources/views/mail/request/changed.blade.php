@@ -43,23 +43,25 @@
             <pre class="comment">{{ $comment }}</pre>
         </div>
     @endif
-    <table>
-        <tbody>
-        <tr>
-            <th colspan="3">Изменения</th>
-        </tr>
-        <tr class="first-row">
-            <td>Поле</td>
-            <td>Старое значение</td>
-            <td>Новое значение</td>
-        </tr>
-        @foreach($dirty as $item)
+    @if(!empty($dirty))
+        <table>
+            <tbody>
             <tr>
-                <td>{{ $item['label'] }}</td>
-                <td>{{ $item['old_value'] }}</td>
-                <td>{{ $item['value'] }}</td>
+                <th colspan="3">Изменения</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            <tr class="first-row">
+                <td>Поле</td>
+                <td>Старое значение</td>
+                <td>Новое значение</td>
+            </tr>
+            @foreach($dirty as $item)
+                <tr>
+                    <td>{{ $item['label'] }}</td>
+                    <td>{{ $item['old_value'] }}</td>
+                    <td>{{ $item['value'] }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
