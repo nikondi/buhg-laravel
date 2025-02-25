@@ -48,6 +48,7 @@ class RequestModel extends Model
             'contract_date' => 'date',
             'doc_type' => DocumentType::class,
             'student_doc_type' => DocumentType::class,
+            'file' => 'array',
         ];
     }
 
@@ -103,5 +104,6 @@ class RequestModel extends Model
         'student_doc_date',
 
         'changes_count',
+        'file'
     ];
 }

@@ -39,6 +39,7 @@ class RequestCreateRequest extends FormRequest
             'student_doc_type' => ['nullable', 'numeric'],
             'student_doc_number' => ['nullable'],
             'student_doc_date' => ['nullable', 'date'],
+            'files' => []
         ];
     }
 

@@ -9,6 +9,7 @@ use App\Mail\RequestCreatedMail;
 use App\Models\RequestModel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class RequestController extends Controller
 {
@@ -27,9 +28,27 @@ class RequestController extends Controller
                 Mail::to($email)->send(new RequestCreatedMail($requestModel));
             }
         }
-        catch (\Throwable $e) {
+        catch (Throwable $e) {
             Log::channel('requests')
                 ->error(sprintf('Error sending request #%s: %s', $requestModel->number, $e->getMessage()));
+        }
+
+        try {
+            $files = $request->file('files');
+            $file_names = [];
+
+            foreach ($files as $file) {
+                $filename = $file->getClientOriginalName();
+                if($file->storeAs($requestModel->id, $filename, 'requests'))
+                    $file_names[] = $filename;
+                else
+                    throw new \Exception('File '.$file->getClientOriginalName().' upload failed');
+            }
+            $requestModel->update(['file' => $file_names]);
+        }
+        catch (Throwable $e) {
+            Log::channel('requests')
+                ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $e->getMessage()));
         }
 
         return response()->json([

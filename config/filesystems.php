@@ -47,6 +47,15 @@ return [
             'report' => false,
         ],
 
+        'requests' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/requests'),
+            'url' => env('APP_URL').'/storage/requests',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
