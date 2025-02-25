@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 /** @mixin RequestModel */
 class RequestResource extends JsonResource
@@ -58,7 +59,9 @@ class RequestResource extends JsonResource
             'organization_id' => $this->organization_id,
 
             'history_count' => $this->history_count,
-            'changes_count' => $this->changes_count
+            'changes_count' => $this->changes_count,
+
+            'files' => $this->getFileUrls()
         ];
     }
 }

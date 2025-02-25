@@ -61,7 +61,9 @@ class RequestShowResource extends JsonResource
                 'kpp' => $this->organization->kpp,
             ],
 
-            'history_count' => $this->history_count
+            'history_count' => $this->history_count,
+
+            'files' => $this->getFileUrls()
         ];
     }
 }

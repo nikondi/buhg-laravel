@@ -1,7 +1,7 @@
 import {TRequestEditPage} from "@/Features/Request/types";
 import {HeaderActions, HeaderTitle} from "@/Parts/Header";
 import {Link, usePage} from "@inertiajs/react";
-import {Button, Icon} from "@/Components";
+import {Button, Fancybox, Icon} from "@/Components";
 import {mergeClass} from "@/helpers";
 import useRequestForm, {RequestForm} from "@/Features/Request/contexts/RequestFormContext";
 import {Input, Select, Switcher, Textarea} from "@/Features/Request/components";
@@ -64,6 +64,16 @@ export default function Edit({request, documents}: TRequestEditPage) {
         </div>
         <Sidebar/>
       </RequestForm>
+    </div>
+    <div className="container my-5">
+      {request.files.length > 0 &&
+        <Fancybox className="border p-3 border-gray-500 mb-5">
+          <div className="mb-2 font-semibold">Вложения</div>
+          <div className="flex gap-x-3 flex-wrap">
+            {request.files.map((link) => <a href={link.url} data-fancybox="files" key={link.url} className="text-blue-600 underline underline-offset-4 transition-colors duration-200 hover:text-blue-700">{link.label}</a>)}
+          </div>
+        </Fancybox>
+      }
     </div>
     <div className="container my-7">
       <History requestId={request.id}/>

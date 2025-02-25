@@ -13,7 +13,9 @@ html {
 
 @import "components/popup";
 
-
+.fancybox__container {
+  z-index: 3020 !important;
+}
 .header-actions {
   background-color: #ddd;
 

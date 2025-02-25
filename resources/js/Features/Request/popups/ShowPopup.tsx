@@ -2,7 +2,7 @@ import {Background, Close, Loading, Popup} from "@/Components/Popup";
 import {PropsWithChildren, useEffect, useState} from "react";
 import axios from "axios";
 import {IRequestShow} from "@/types";
-import {CopyText, Icon} from "@/Components";
+import {CopyText, Fancybox, Icon} from "@/Components";
 import {copyToClipboard, formatPhone, formatPrice} from "@/helpers";
 import toast from "react-hot-toast";
 import Info from "@/Components/Info";
@@ -20,8 +20,12 @@ export default function ShowPopup({request_id}: Props) {
     axios.get(route('request.show', [request_id]))
       .then(({data}) => setRequest(data))
       .catch(() => setError(true))
-      .finally(() => setLoading(false))
+      .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    console.log(request)
+  }, [request]);
 
   return <Popup className="request-show-popup">
     <Background/>
@@ -46,6 +50,14 @@ export default function ShowPopup({request_id}: Props) {
                   <div className="text-xl text-orange-500"><CopyText text={request.number}>#{request.number}</CopyText>
                   </div>
                 </div>
+                {request.files.length > 0 &&
+                  <Fancybox className="border p-3 border-gray-500 mb-5">
+                    <div className="mb-2 font-semibold">Вложения</div>
+                    <div className="flex gap-x-3 flex-wrap">
+                      {request.files.map((link) => <a href={link.url} data-fancybox="files" key={link.url} className="text-blue-600 underline underline-offset-4 transition-colors duration-200 hover:text-blue-700">{link.label}</a>)}
+                    </div>
+                  </Fancybox>
+                }
 
                 <div className="request-show__title">Информация о заявке</div>
                 <table className="request-show-table">

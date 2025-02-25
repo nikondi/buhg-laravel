@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 #[ObservedBy(RequestObserver::class)]
@@ -33,6 +34,13 @@ class RequestModel extends Model
         return $this->hasMany(History::class, 'request_id');
     }
 
+    public function getFileUrls(): array
+    {
+        return $this->file?array_map(fn($file) => [
+            'url' => Storage::disk('requests')->url($this->id.'/'.$file),
+            'label' => basename($file),
+        ], $this->file):[];
+    }
 
     protected function casts(): array
     {
@@ -58,6 +66,10 @@ class RequestModel extends Model
             if (!$model->uuid) {
                 $model->uuid = Str::uuid()->toString();
             }
+        });
+
+        static::deleted(function (RequestModel $model) {
+            Storage::disk('requests')->deleteDirectory($model->id);
         });
 
         parent::boot();

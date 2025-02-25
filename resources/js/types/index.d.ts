@@ -48,6 +48,11 @@ export type setDataFunction<TForm> = setDataByObject<TForm> & setDataByMethod<TF
 export type TRequestStatus = 'new' | 'in_work' | 'downloaded_xml' | 'done' | 'declined' | 'duplicate';
 export type TRequestPickup = 'send' | 'pickup';
 
+type SimpleLink = {
+  url: string
+  label: string
+}
+
 export interface IRequest {
   id: number
   number: string
@@ -82,6 +87,7 @@ export interface IRequest {
   organization_id: number
   history_count: number
   changes_count: number
+  files: SimpleLink[]
 }
 
 export interface IRequestShow {
@@ -121,6 +127,7 @@ export interface IRequestShow {
     kpp: string
   }
   history_count: number
+  files: SimpleLink[]
 }
 
 export interface IRequestRow {
