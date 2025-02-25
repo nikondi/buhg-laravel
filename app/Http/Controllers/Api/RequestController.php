@@ -36,19 +36,26 @@ class RequestController extends Controller
         try {
             $files = $request->file('files');
             $file_names = [];
+            $not_uploaded = [];
 
             foreach ($files as $file) {
                 $filename = $file->getClientOriginalName();
                 if($file->storeAs($requestModel->id, $filename, 'requests'))
                     $file_names[] = $filename;
                 else
-                    throw new \Exception('File '.$file->getClientOriginalName().' upload failed');
+                    $not_uploaded[] = $file;
             }
             $requestModel->update(['file' => $file_names]);
         }
         catch (Throwable $e) {
             Log::channel('requests')
                 ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $e->getMessage()));
+            if(!empty($not_uploaded)) {
+                foreach ($not_uploaded as $file) {
+                    Log::channel('requests')
+                        ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $file->getClientOriginalName().' ('.$file->getError().'): '.$file->getSize()));
+                }
+            }
         }
 
         return response()->json([
