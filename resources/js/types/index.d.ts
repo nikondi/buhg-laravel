@@ -51,6 +51,7 @@ export type TRequestPickup = 'send' | 'pickup';
 type SimpleLink = {
   url: string
   label: string
+  key?: string
 }
 
 export interface IRequest {

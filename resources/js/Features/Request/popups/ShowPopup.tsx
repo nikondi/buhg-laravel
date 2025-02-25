@@ -50,7 +50,7 @@ export default function ShowPopup({request_id}: Props) {
                   <Fancybox className="border p-3 border-gray-500 mb-5">
                     <div className="mb-2 font-semibold">Вложения</div>
                     <div className="flex gap-x-3 flex-wrap">
-                      {request.files.map((link) => <a href={link.url} data-fancybox="files" key={link.url} className="text-blue-600 underline underline-offset-4 transition-colors duration-200 hover:text-blue-700">{link.label}</a>)}
+                      {request.files.map((link) => <a href={link.url} data-fancybox="files" key={link.key} className="text-blue-600 underline underline-offset-4 transition-colors duration-200 hover:text-blue-700">{link.label}</a>)}
                     </div>
                   </Fancybox>
                 }
