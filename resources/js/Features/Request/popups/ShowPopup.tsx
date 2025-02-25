@@ -23,10 +23,6 @@ export default function ShowPopup({request_id}: Props) {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    console.log(request)
-  }, [request]);
-
   return <Popup className="request-show-popup">
     <Background/>
     <div className="popup__content-wrapper">
@@ -34,7 +30,7 @@ export default function ShowPopup({request_id}: Props) {
       <div className="popup__content">
         {!loading
           ? (
-            !error
+            !error && request
               ? <>
                 <div className="mb-3 flex justify-between items-center mt-3">
                   <div>
