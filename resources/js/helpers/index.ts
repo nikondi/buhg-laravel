@@ -49,6 +49,8 @@ export function formatPrice(price: string|number) {
 
 
 export function formatPhone(phone: string) {
+  if(!phone)
+    return;
   const cleaned = phone.replace(/\D/g, '');
   const match = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
   if (match)
