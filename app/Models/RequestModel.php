@@ -36,7 +36,7 @@ class RequestModel extends Model
 
     public function getFileUrls(): array
     {
-        return $this->files?array_map(fn($file, $key) => [
+        return !empty($this->files)?array_map(fn($file, $key) => [
             'url' => Storage::disk('requests')->url($this->id.'/'.$file),
             'label' => basename($file),
             'key' => $key
