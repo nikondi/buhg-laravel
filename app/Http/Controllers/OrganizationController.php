@@ -37,6 +37,7 @@ class OrganizationController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'short_name' => 'required',
             'inn' => 'digits_between:10,12|unique:organizations,inn',
             'kpp' => 'digits:9',
         ]);

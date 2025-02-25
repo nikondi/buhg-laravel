@@ -8,6 +8,6 @@ class Organization extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'name', 'inn', 'kpp'
+        'name', 'short_name', 'inn', 'kpp'
     ];
 }
