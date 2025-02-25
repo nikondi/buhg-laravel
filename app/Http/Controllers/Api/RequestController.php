@@ -45,7 +45,7 @@ class RequestController extends Controller
                 else
                     $not_uploaded[] = $file;
             }
-            $requestModel->update(['file' => $file_names]);
+            $requestModel->update(['files' => $file_names]);
         }
         catch (Throwable $e) {
             Log::channel('requests')
