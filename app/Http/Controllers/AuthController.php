@@ -18,13 +18,13 @@ class AuthController extends Controller
 
     public function handle(LoginRequest $request) {
         $credentials = [
-            'cn' => $request->get('login'),
+            'sAMAccountName' => $request->get('login'),
             'password' => $request->get('password'),
         ];
 
         try {
             $user = User::query()
-                ->where('cn', $credentials['cn'])
+                ->where('sAMAccountName', $credentials['sAMAccountName'])
                 ->first();
 
             if(!$user)
