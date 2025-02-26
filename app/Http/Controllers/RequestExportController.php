@@ -182,7 +182,7 @@ class RequestExportController extends Controller
         $organization_data = [
             'inn' => mb_str_pad($request->organization->inn, 12, '-'),
             'kpp' => mb_str_pad($request->organization->kpp, 9, '-'),
-            'name' => mb_str_pad($request->organization->name, 160, '-'),
+            'name' => mb_str_pad(mb_strtoupper($request->organization->name), 160, '-'),
         ];
 
         $exploded_contract_cost = explode(".", $request->contract_cost);
@@ -209,9 +209,9 @@ class RequestExportController extends Controller
         ];
 
         $director = [
-            'surname' => mb_str_pad($request->director->surname, 20, '-'),
-            'name' => mb_str_pad($request->director->name, 20, '-'),
-            'lastname' => mb_str_pad($request->director->lastname, 20, '-'),
+            'surname' => mb_str_pad(mb_strtoupper($request->director->surname), 20, '-'),
+            'name' => mb_str_pad(mb_strtoupper($request->director->name), 20, '-'),
+            'lastname' => mb_str_pad(mb_strtoupper($request->director->lastname), 20, '-'),
         ];
 
         //inn_organization
