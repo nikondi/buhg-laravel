@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 
@@ -22,8 +23,11 @@ readonly class ExcelSheet {
 
     public function mappedFill($value, $map): self {
         $value = mb_str_split($value);
-        foreach ($map as $key => $cell)
-            $this->sheet->setCellValue($cell, $value[$key]);
+        foreach ($map as $key => $cell) {
+            if(!isset($value[$key]))
+                $value[$key] = '-';
+            $this->sheet->setCellValueExplicit($cell, $value[$key], is_numeric($value[$key])?DataType::TYPE_NUMERIC:DataType::TYPE_STRING);
+        }
 
         return $this;
     }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use SimpleXMLElement;
 
 class RequestExportController extends Controller
@@ -149,18 +150,18 @@ class RequestExportController extends Controller
 
         return response($resultXML, 200)
             ->setCharset('windows-1251')
-            ->header('Content-Type', 'text/xml');
-//            ->header('Content-Disposition', 'attachment; filename="' . $name_document_xml . '"');
+            ->header('Content-Type', 'text/xml')
+            ->header('Content-Disposition', 'attachment; filename="' . $name_document_xml . '"');
     }
 
     public function excel(RequestModel $request)
     {
         $request->load(['director', 'organization']);
 
-        $sourceFilePath = Storage::disk('local')->path('request_template.xls');
+        $sourceFilePath = Storage::disk('local')->path('request_template.xlsx');
 
         // МЕНЯЮ ФОРМИРОВАНИЕ НАЗВАНИЯ
-        $name_excel = sprintf('%s_%s_%s_%s.xls',
+        $name_excel = sprintf('%s_%s_%s_%s.xlsx',
             $request->surname,
             $request->name,
             $request->number,
@@ -306,9 +307,12 @@ class RequestExportController extends Controller
         }
 
         // Сохраняем изменения в том же файле
-        header('Content-Type: application/vnd.ms-excel;');
-        header('Content-Disposition: attachment; filename="'.$name_excel.'"');
-        (new Xls($spreadsheet))->save("php://output");
-        die();
+        ob_start();
+        (new Xlsx($spreadsheet))->save("php://output");
+        $xlsContent = ob_get_clean();
+
+        return response($xlsContent, 200)
+            ->header('Content-Type', 'application/vnd.ms-excel;')
+            ->header('Content-Disposition', 'attachment; filename="'.$name_excel.'"');
     }
 }
