@@ -5,7 +5,7 @@ import Status from "./Status";
 import {formatPhone, formatPrice} from "@/helpers";
 import usePopups from "@/Contexts/PopupsContext";
 import {ShowPopup} from "../popups";
-import {XMLDownloadIcon} from "./";
+import {DownloadIcon} from "./";
 
 type Props = {
   request?: IRequestRow
@@ -40,12 +40,7 @@ export default function RequestRow({request}: Props) {
     <td className="text-center">{request.created_at}</td>
     <td>
       <div className="flex gap-x-1 justify-end">
-        {request.pickup_type == 'pickup'
-          ? <a target="_blank" href={route('request.excel', [request.id])} className="director-form__button">
-            <Icon icon="excel" size="1.2em"/>
-          </a>
-          : <XMLDownloadIcon request_id={request.id}/>
-        }
+        <DownloadIcon request_id={request.id}/>
         <button className="director-form__button" onClick={onShow}>
           <Icon icon="eye" size="1.2em"/>
         </button>

@@ -8,12 +8,12 @@ type Props = {
   className?: string
 }
 
-export default function XMLDownload({request_id, className = 'xml-download-dropdown'}: Props) {
+export default function XMLDownload({request_id, className}: Props) {
   const [opened, setOpened] = useState(false);
   const elRef = useOutsideClick<HTMLDivElement>(() => setOpened(false));
 
   return <div className={mergeClass("dropdown", className, opened && 'active')} ref={elRef}>
-    <button onClick={() => setOpened((prev) => !prev)} className="btn btn--small !inline-flex items-center gap-x-2 !bg-blue-600 !border-blue-600 hover:!bg-blue-700 hover:!border-blue-700">
+    <button onClick={() => setOpened((prev) => !prev)} className="btn btn--small !inline-flex items-center gap-x-2 !bg-blue-600 !border-blue-600 hover:!bg-blue-700 hover:!border-blue-700 text-nowrap">
       <Icon icon="xml"/>
       Скачать XML
     </button>

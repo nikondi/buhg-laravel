@@ -20,11 +20,11 @@ export default function Edit({request, documents}: TRequestEditPage) {
         <HeaderTitle/>
       </div>
       <div className="flex gap-x-2">
-        {request.pickup_type == 'pickup' && <a href={route('request.excel', [request.id])} target="_blank" className="btn btn--small !inline-flex items-center gap-x-2 !bg-green-600 !border-green-600 hover:!bg-green-700 hover:!border-green-700">
+        <a href={route('request.excel', [request.id])} target="_blank" className="btn btn--small !inline-flex items-center gap-x-2 !bg-green-600 !border-green-600 hover:!bg-green-700 hover:!border-green-700">
           <Icon icon="excel"/>
           Скачать Excel
-        </a>}
-        {request.pickup_type == 'send' && <XMLDownload request_id={request.id}/>}
+        </a>
+        <XMLDownload request_id={request.id} className="xml-download-dropdown"/>
       </div>
     </HeaderActions>
     <div className="container my-5">

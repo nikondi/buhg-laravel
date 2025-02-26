@@ -34,12 +34,12 @@ export default function ShowPopup({request_id}: Props) {
             !error && request
               ? <>
                 <div className="mb-3 flex justify-between items-center mt-3">
-                  <div>
-                    {request.pickup_type == 'pickup' && <a href={route('request.excel', [request.id])} target="_blank" className="btn btn--small !inline-flex items-center gap-x-2 !bg-green-600 !border-green-600 hover:!bg-green-700 hover:!border-green-700">
+                  <div className="flex gap-x-2">
+                    <a href={route('request.excel', [request.id])} target="_blank" className="btn btn--small !inline-flex items-center gap-x-2 !bg-green-600 !border-green-600 hover:!bg-green-700 hover:!border-green-700">
                       <Icon icon="excel"/>
                       Скачать Excel
-                    </a>}
-                    {request.pickup_type == 'send' && <XMLDownload request_id={request.id} className="request-show__xml-dropdown" />}
+                    </a>
+                    <XMLDownload request_id={request.id} />
                   </div>
                   <div className="text-xl text-orange-500"><CopyText text={request.number}>#{request.number}</CopyText>
                   </div>
