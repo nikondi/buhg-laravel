@@ -1,0 +1,30 @@
+.dropdown {
+  @apply relative;
+  &__list {
+    @apply bg-white absolute shadow border border-gray-300;
+    z-index: 5;
+    width: 200px;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%,  var(--dropdown-top-offset, 30px));
+    transition: {
+      duration: .3s;
+      property: visibility, opacity, transform;
+    };
+    opacity: 0;
+    visibility: hidden;
+
+    li {
+      a,
+      button {
+        @apply block p-2 hover:bg-gray-200 transition-colors text-sm;
+      }
+    }
+  }
+  &.active &__list {
+    transform: translate(-50%, var(--dropdown-active-top-offset, 10px));
+    visibility: visible;
+    opacity: 1;
+  }
+
+}

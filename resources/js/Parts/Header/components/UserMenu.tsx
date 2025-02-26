@@ -13,7 +13,7 @@ export default function UserMenu() {
 
   const handleClick = () => setOpened((prev) => !prev);
 
-  return <div className={mergeClass("header-user", opened && 'active')} ref={listRef}>
+  return <div className={mergeClass("header-user dropdown", opened && 'active')} ref={listRef}>
     <div className="header-user__name" onClick={handleClick}>
       <svg width="1em" height="1em" viewBox="0 0 451.847 451.847">
         <path
@@ -25,7 +25,7 @@ export default function UserMenu() {
         <img src="/assets/image/user.png" alt="" className=""/>
       </div>
     </div>
-    <div className="header-user__list">
+    <div className="dropdown__list">
       <ul>
         <li><Link href={route('login.logout')}>Выйти</Link></li>
       </ul>

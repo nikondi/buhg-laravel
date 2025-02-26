@@ -12,6 +12,7 @@ html {
 }
 
 @import "components/popup";
+@import "components/dropdown";
 
 .fancybox__container {
   z-index: 3020 !important;
@@ -129,6 +130,15 @@ html {
     @apply text-lg mb-2;
   }
 }
+.request-show__xml-dropdown {
+  .dropdown__list {
+    left: 0;
+    transform: translate(0, 20px);
+  }
+  &.active .dropdown__list {
+    transform: translate(0, 10px);
+  }
+}
 
 .request-show-table {
   @apply w-full border-t border-gray-200;
@@ -204,12 +214,29 @@ html {
   }
 }
 
+.xml-download-dropdown {
+  .dropdown__list {
+    transform: translate(0, 25px);
+    left: auto;
+    right: 0;
+  }
+  &.active .dropdown__list {
+    transform: translate(0, 10px);
+  }
+}
+.xml-icon-download-dropdown {
+  --dropdown-active-top-offset: 5px;
+  --dropdown-top-offset: 15px;
+}
+
 @layer utilities {
   .header-user {
+    --dropdown-active-top-offset: 5px;
+    --dropdown-top-offset: 20px;
     @apply relative self-stretch;
+    margin-left: 10px;
     &__name {
       @apply text-white flex gap-x-2 items-center cursor-pointer p-1 px-5 bg-cyan-900 transition-colors duration-200 hover:bg-cyan-950;
-      margin-left: 10px;
       height: 100%;
       svg {
         font-size: 12px;
@@ -227,37 +254,14 @@ html {
       }
     }
 
-    &__list {
-      @apply absolute right-0;
-      top: 100%;
-      padding-top: 25px;
-      visibility: hidden;
-      opacity: 0;
-      transition: {
-        duration: .3s;
-        property: visibility, opacity, padding-top;
-      };
-
-      ul {
-        @apply bg-white shadow rounded-md;
-      }
-
-      a {
-        @apply block py-1 px-2 transition-colors duration-300 hover:bg-gray-200;
-        width: 200px;
-
-        &:last-child {
-          @apply rounded-md;
-        }
-      }
-    }
-    &.active &__list {
-      padding-top: 5px;
-      visibility: visible;
-      opacity: 1;
-    }
     &.active svg {
       transform: rotate(180deg);
+    }
+    &.active &__name {
+      @apply bg-cyan-950;
+    }
+    .dropdown__list {
+      width: 100%;
     }
   }
 

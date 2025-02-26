@@ -40,7 +40,7 @@ class RequestExportController extends Controller
             'doc_date' => $request->doc_date->format('d.m.Y'),
             'doc_type' => $request->doc_type,
             'doc_number' => $request->doc_number,
-//            'inn' => $request->inn,
+            'inn' => $request->inn,
         ];
 
 

@@ -6,6 +6,7 @@ import {CopyText, Fancybox, Icon} from "@/Components";
 import {copyToClipboard, formatPhone, formatPrice} from "@/helpers";
 import toast from "react-hot-toast";
 import Info from "@/Components/Info";
+import {XMLDownload} from "@/Features/Request/components";
 
 type Props = {
   request_id: number
@@ -38,10 +39,7 @@ export default function ShowPopup({request_id}: Props) {
                       <Icon icon="excel"/>
                       Скачать Excel
                     </a>}
-                    {request.pickup_type == 'send' && <a href={route('request.xml', [request.id])} target="_blank" className="btn btn--small !inline-flex items-center gap-x-2 !bg-blue-600 !border-blue-600 hover:!bg-blue-700 hover:!border-blue-700">
-                      <Icon icon="xml"/>
-                      Скачать XML
-                    </a>}
+                    {request.pickup_type == 'send' && <XMLDownload request_id={request.id} className="request-show__xml-dropdown" />}
                   </div>
                   <div className="text-xl text-orange-500"><CopyText text={request.number}>#{request.number}</CopyText>
                   </div>

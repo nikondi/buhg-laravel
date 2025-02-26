@@ -4,7 +4,8 @@ import {Link, router} from "@inertiajs/react";
 import Status from "./Status";
 import {formatPhone, formatPrice} from "@/helpers";
 import usePopups from "@/Contexts/PopupsContext";
-import {ShowPopup} from "@/Features/Request/popups";
+import {ShowPopup} from "../popups";
+import {XMLDownloadIcon} from "./";
 
 type Props = {
   request?: IRequestRow
@@ -43,9 +44,7 @@ export default function RequestRow({request}: Props) {
           ? <a target="_blank" href={route('request.excel', [request.id])} className="director-form__button">
             <Icon icon="excel" size="1.2em"/>
           </a>
-          : <a target="_blank" href={route('request.xml', [request.id])} className="director-form__button">
-            <Icon icon="xml" size="1.15em"/>
-          </a>
+          : <XMLDownloadIcon request_id={request.id}/>
         }
         <button className="director-form__button" onClick={onShow}>
           <Icon icon="eye" size="1.2em"/>

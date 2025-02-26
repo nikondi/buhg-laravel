@@ -4,7 +4,7 @@ import {Link, usePage} from "@inertiajs/react";
 import {Button, Fancybox, Icon} from "@/Components";
 import {mergeClass} from "@/helpers";
 import useRequestForm, {RequestForm} from "@/Features/Request/contexts/RequestFormContext";
-import {Input, Select, Switcher, Textarea} from "@/Features/Request/components";
+import {Input, Select, Switcher, Textarea, XMLDownload} from "@/Features/Request/components";
 import {History} from "@/Features/Request/parts";
 
 const onlyChars = (value: string) => value.replace(/[^A-zА-я]/, '');
@@ -24,10 +24,7 @@ export default function Edit({request, documents}: TRequestEditPage) {
           <Icon icon="excel"/>
           Скачать Excel
         </a>}
-        {request.pickup_type == 'send' && <a href={route('request.xml', [request.id])} target="_blank" className="btn btn--small !inline-flex items-center gap-x-2 !bg-blue-600 !border-blue-600 hover:!bg-blue-700 hover:!border-blue-700">
-          <Icon icon="xml"/>
-          Скачать XML
-        </a>}
+        {request.pickup_type == 'send' && <XMLDownload request_id={request.id}/>}
       </div>
     </HeaderActions>
     <div className="container my-5">
