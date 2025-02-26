@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Enums\EducationType;
 use App\Helpers\ExcelSheet;
 use App\Models\RequestModel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use SimpleXMLElement;
 
 class RequestExportController extends Controller
 {
-    public function xml(RequestModel $request)
+    public function xml(RequestModel $request, Request $_request)
     {
         $request->load(['director', 'organization']);
+        $doc_type = $_request->get('doc_type', 'passport');
 
         $filename = sprintf("UT_SPROPLOBUCH_%s_%s_%s%s_%s_",
             config('request_xml.kod_one'),
@@ -37,24 +39,15 @@ class RequestExportController extends Controller
             'doc_date' => $request->doc_date->format('d.m.Y'),
             'doc_type' => $request->doc_type,
             'doc_number' => $request->doc_number,
-            'inn' => $request->inn,
-        ];
-        $student = $request->same_student ? $payer : [
-            'surname' => mb_strtoupper($request->student_surname),
-            'name' => mb_strtoupper($request->student_name),
-            'lastname' => mb_strtoupper($request->student_lastname),
-            'birthdate' => $request->student_birthdate->format('d.m.Y'),
-            'doc_date' => $request->student_doc_date->format('d.m.Y'),
-            'doc_type' => $request->student_doc_type,
-            'doc_number' => $request->student_doc_number,
-            'inn' => $request->student_inn,
+//            'inn' => $request->inn,
         ];
 
 
         // Создаем корневой элемент
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Файл/>');
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Файл />');
 
         // Установка атрибутов корневого элемента
+//        $xml->addAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $xml->addAttribute('ИдФайл', $id_file); //название без .xml
         $xml->addAttribute('ВерсПрог', '1С:БУХГАЛТЕРИЯ ГОС. УЧРЕЖДЕНИЯ 2.0.101.6');
         $xml->addAttribute('ВерсФорм', '5.01');
@@ -69,18 +62,19 @@ class RequestExportController extends Controller
         // Создаем элемент СвНп
         $svNp = $document->addChild('СвНП');
         $npYUL = $svNp->addChild('НПЮЛ');
-        $npYUL->addAttribute('НаимОрг', $request->organization->name);
+        $npYUL->addAttribute('НаимОрг', htmlspecialchars($request->organization->name));
         $npYUL->addAttribute('ИННЮЛ', $request->organization->inn);
         $npYUL->addAttribute('КПП', $request->organization->kpp);
 
         // Создаем элемент Подписант
         $podpisant = $document->addChild('Подписант');
 //        $podpisant->addAttribute('ПрПодп', $request->director->type->value);
+
         $fio = $podpisant->addChild('ФИО');
 //        $fiO_type = $fiO->addChild('ФИОТип');
-        $fio->addAttribute('Фамилия', $request->director->surname);
-        $fio->addAttribute('Имя', $request->director->name);
-        $fio->addAttribute('Отчество', $request->director->lastname);
+        $fio->addAttribute('Фамилия', mb_strtoupper($request->director->surname));
+        $fio->addAttribute('Имя', mb_strtoupper($request->director->name));
+        $fio->addAttribute('Отчество', mb_strtoupper($request->director->lastname));
 
         // Создаем элемент СвПред
 //        $svPred = $podpisant->addChild('СвПред');
@@ -98,7 +92,8 @@ class RequestExportController extends Controller
         $npPlatOp = $svedOp->addChild('НППлатОбрУсл');
         $npPlatOp->addAttribute('ДатаРожд', $payer['birthdate']);
 //        $danFIO = $npPlatOp->addChild('ДанФИОТип');
-//        $danFIO->addAttribute('ИНН', $payer['inn']);
+        if($doc_type == 'inn')
+            $npPlatOp->addAttribute('ИНН', $payer['inn']);
 
         // Создаем элементы ФИО и СвДок
         $fiOPlat = $npPlatOp->addChild('ФИО');
@@ -107,36 +102,55 @@ class RequestExportController extends Controller
         $fiOPlat->addAttribute('Отчество', $payer['lastname']);
 
         // Сведения о документе
-        $svedDok = $npPlatOp->addChild('СведДок');
-        $svedDok->addAttribute('КодВидДок', $payer['doc_type']);
-        $svedDok->addAttribute('СерНомДок', $payer['doc_number']);
-        $svedDok->addAttribute('ДатаДок', $payer['doc_date']);
+        if($doc_type == 'passport') {
+            $svedDok = $npPlatOp->addChild('СведДок');
+            $svedDok->addAttribute('КодВидДок', $payer['doc_type']);
+            $svedDok->addAttribute('СерНомДок', $payer['doc_number']);
+            $svedDok->addAttribute('ДатаДок', $payer['doc_date']);
+        }
 
-        // Создаем элемент Обучаемый
-        $obuchayemy = $svedOp->addChild('Обучаемый');
-//        $danFIOObuch = $obuchayemy->addChild('ДанФИОТип');
-//        $danFIOObuch->addAttribute('ИНН', $student['inn']);
-        $obuchayemy->addAttribute('ДатаРожд', $student['birthdate']);
+        if (!$request->same_student) {
+            $student = [
+                'surname' => mb_strtoupper($request->student_surname),
+                'name' => mb_strtoupper($request->student_name),
+                'lastname' => mb_strtoupper($request->student_lastname),
+                'birthdate' => $request->student_birthdate->format('d.m.Y'),
+                'doc_date' => $request->student_doc_date->format('d.m.Y'),
+                'doc_type' => $request->student_doc_type,
+                'doc_number' => $request->student_doc_number,
+                'inn' => $request->student_inn,
+            ];
 
-        // Создаем элементы ФИО и СвДок для обучаемого
-        $fiOObuch = $obuchayemy->addChild('ФИО');
-//        $fiOObuch_type = $fiOObuch->addChild('ФИОТип');
-        $fiOObuch->addAttribute('Фамилия', $student['surname']);
-        $fiOObuch->addAttribute('Имя', $student['name']);
-        $fiOObuch->addAttribute('Отчество', $student['lastname']);
+            // Создаем элемент Обучаемый
+            $obuchayemy = $svedOp->addChild('Обучаемый');
+            $obuchayemy->addAttribute('ДатаРожд', $student['birthdate']);
+            if($doc_type == 'inn')
+                $obuchayemy->addAttribute('ИНН', $student['inn']);
 
-        $svedDokObuch = $obuchayemy->addChild('СведДок');
-        $svedDokObuch->addAttribute('КодВидДок', $student['doc_type']);
-        $svedDokObuch->addAttribute('СерНомДок', $student['doc_number']);
-        $svedDokObuch->addAttribute('ДатаДок', $student['doc_date']);
+            // Создаем элементы ФИО и СвДок для обучаемого
+            $fiOObuch = $obuchayemy->addChild('ФИО');
+            $fiOObuch->addAttribute('Фамилия', $student['surname']);
+            $fiOObuch->addAttribute('Имя', $student['name']);
+            $fiOObuch->addAttribute('Отчество', $student['lastname']);
+
+            if($doc_type == 'passport') {
+                $svedDokObuch = $obuchayemy->addChild('СведДок');
+                $svedDokObuch->addAttribute('КодВидДок', $student['doc_type']);
+                $svedDokObuch->addAttribute('СерНомДок', $student['doc_number']);
+                $svedDokObuch->addAttribute('ДатаДок', $student['doc_date']);
+            }
+        }
 
         // Сохранение XML в файл
         // Завершение: сохраняем XML как строку
-        $xmlString = $xml->asXML();
+        $resultXML = $xml->asXML();
+        $resultXML = str_replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="windows-1251"?>', $resultXML);
+        $resultXML = iconv('utf-8', 'windows-1251//TRANSLIT', $resultXML);
 
-        return response($xmlString, 200)
-            ->header('Content-Type', 'text/xml')
-            ->header('Content-Disposition', 'attachment; filename="' . $name_document_xml . '"');
+        return response($resultXML, 200)
+            ->setCharset('windows-1251')
+            ->header('Content-Type', 'text/xml');
+//            ->header('Content-Disposition', 'attachment; filename="' . $name_document_xml . '"');
     }
 
     public function excel(RequestModel $request)
@@ -146,7 +160,7 @@ class RequestExportController extends Controller
         $sourceFilePath = Storage::disk('local')->path('request_template.xls');
 
         // МЕНЯЮ ФОРМИРОВАНИЕ НАЗВАНИЯ
-        $name_excel = sprintf('%s_%s_%s_%s.xlsx',
+        $name_excel = sprintf('%s_%s_%s_%s.xls',
             $request->surname,
             $request->name,
             $request->number,
@@ -183,9 +197,9 @@ class RequestExportController extends Controller
         ];
 
         $payer = [
-            'surname' => mb_str_pad($request->surname, 36, '-'),
-            'name' => mb_str_pad($request->name, 36, '-'),
-            'lastname' => mb_str_pad($request->lastname, 36, '-'),
+            'surname' => mb_str_pad(mb_strtoupper($request->surname), 36, '-'),
+            'name' => mb_str_pad(mb_strtoupper($request->name), 36, '-'),
+            'lastname' => mb_str_pad(mb_strtoupper($request->lastname), 36, '-'),
             'inn' => mb_str_pad($request->inn, 12, '-'),
             'birthdate' => mb_str_pad($request->birthdate->format('dmY'), 10, '-'),
             'doc_type' => mb_str_pad($request->doc_type, 2, '-'),
@@ -261,9 +275,9 @@ class RequestExportController extends Controller
 
         if(!$request->same_student) {
             $student = [
-                'surname' => mb_str_pad($request->student_surname, 36, '-'),
-                'name' => mb_str_pad($request->student_name, 36, '-'),
-                'lastname' => mb_str_pad($request->student_lastname, 36, '-'),
+                'surname' => mb_str_pad(mb_strtoupper($request->student_surname), 36, '-'),
+                'name' => mb_str_pad(mb_strtoupper($request->student_name), 36, '-'),
+                'lastname' => mb_str_pad(mb_strtoupper($request->student_lastname), 36, '-'),
                 'inn' => mb_str_pad($request->student_inn, 12, '-'),
                 'birthdate' => mb_str_pad($request->student_birthdate->format('dmY'), 10, '-'),
                 'doc_type' => mb_str_pad($request->student_doc_type, 2, '-'),
@@ -294,7 +308,7 @@ class RequestExportController extends Controller
         // Сохраняем изменения в том же файле
         header('Content-Type: application/vnd.ms-excel;');
         header('Content-Disposition: attachment; filename="'.$name_excel.'"');
-        (new Xlsx($spreadsheet))->save("php://output");
+        (new Xls($spreadsheet))->save("php://output");
         die();
     }
 }
