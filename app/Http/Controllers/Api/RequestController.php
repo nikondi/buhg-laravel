@@ -21,6 +21,9 @@ class RequestController extends Controller
         if($data['student_doc_type'] && $data['student_doc_number'])
             $data['student_doc_number'] = DocFormatter::from($data['student_doc_type'], $data['student_doc_number']);
 
+        if(empty($data['student_surname']))
+            $data['same_student'] = true;
+
         $requestModel = RequestModel::create($data);
 
         try {
