@@ -141,7 +141,7 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             \App\Models\RequestModel::class => [
-                'filterableAttributes'=> ['surname', 'name', 'student_surname', 'student_name', 'inn'],
+                'filterableAttributes'=> ['surname', 'name', 'student_surname', 'student_name', 'phone', 'email', 'inn'],
                 'sortableAttributes'=> ['created_at', 'status'],
             ],
         ],

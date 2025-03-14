@@ -19,8 +19,10 @@ class RequestRowResource extends JsonResource
 
             'fullname' => sprintf("%s %s %s", $this->surname, $this->name, $this->lastname),
             'phone' => $this->phone,
+
             'inn' => strip_tags($this->inn),
             'inn_marked' => $this->inn,
+
             'pickup_type' => $this->pickup_type,
 
             'report_year' => $this->report_year,

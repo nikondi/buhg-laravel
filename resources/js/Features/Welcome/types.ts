@@ -5,7 +5,7 @@ export type TWelcomePage = PageProps<{
   statuses: Record<TRequestStatus, string>
   years: KeyValue[]
   filters: {
-    search: string
+    query: string
     status: string
     year: string
   }

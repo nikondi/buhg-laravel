@@ -13,7 +13,6 @@ class WelcomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $years = RequestModel::query()->orderByDesc('report_year')->distinct()->select('report_year')->pluck('report_year');
         return page()
             ->title('Главная')
             ->render('Welcome', [
@@ -50,13 +49,16 @@ class WelcomeController extends Controller
 
                     return RequestRowResource::collection($requests);
                 }),
-                'years' => $years->map(fn($year) => ['key' => $year, 'value' => $year]),
-                'statuses' => collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $item) => [$item->value => $item->shortLabel()]),
-                'filters' => fn() => collect(['search', 'year', 'status'])->mapWithKeys(fn($key) => [$key => $request->get($key, '')]),
+                'years' => function() {
+                    $years = RequestModel::query()->orderByDesc('report_year')->distinct()->select('report_year')->pluck('report_year');
+                    return $years->map(fn($year) => ['key' => $year, 'value' => $year]);
+                },
+                'statuses' => fn() => collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $item) => [$item->value => $item->shortLabel()]),
+                'filters' => fn() => collect(['query', 'year', 'status'])->mapWithKeys(fn($key) => [$key => $request->get($key, '')]),
             ]);
     }
 
-    protected function getSearchQuery(Request $request, string $query = 'search'): string
+    protected function getSearchQuery(Request $request, string $query = 'query'): string
     {
         return $request->str($query)->trim()->toString();
     }

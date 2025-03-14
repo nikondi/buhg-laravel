@@ -119,6 +119,8 @@ class RequestModel extends Model
             'student_name' => (string)$this->student_name,
             'student_surname' => (string)$this->student_surname,
             'report_year' => $this->report_year,
+            'email' => $this->email,
+            'phone' => $this->phone,
             'status' => $this->status->value,
             'created_at' => $this->created_at->timestamp
         ];
