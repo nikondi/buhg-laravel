@@ -29,8 +29,8 @@ export default function RequestRow({request}: Props) {
 
   return <tr>
     <td>{request.number || request.id}</td>
-    <td>{request.surname} {request.name} {request.lastname}</td>
-    <td className="text-center"><CopyText text={request.inn}>{request.inn}</CopyText></td>
+    <td dangerouslySetInnerHTML={{__html: request.fullname}}/>
+    <td className="text-center"><CopyText text={request.inn}><div dangerouslySetInnerHTML={{__html: request.inn_marked}}/></CopyText></td>
     <td className="text-center"><CopyText text={'+7'+request.phone}>{formatPhone(request.phone)}</CopyText></td>
     <td className="text-center">{request.report_year}</td>
     <td className="text-center">{formatPrice(request.contract_cost)} <span className="text-orange-500">₽</span></td>

@@ -6,6 +6,8 @@ use App\Exceptions\LoginFailedException;
 use App\Http\Requests\LoginRequest;
 use App\Ldap\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -48,6 +50,12 @@ class AuthController extends Controller
         catch (LoginFailedException $e) {
             return back()->withErrors([
                 'login' => $e->getMessage(),
+            ])->onlyInput('login');
+        }
+        catch (Throwable $e) {
+            Log::error(sprintf("Error during login: %s in %s:%d", $e->getMessage(), $e->getFile(), $e->getLine()));
+            return back()->withErrors([
+                'login' => 'Произошла ошибка. Попробуйте позже',
             ])->onlyInput('login');
         }
     }

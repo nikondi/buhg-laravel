@@ -159,7 +159,7 @@ html {
 }
 
 .page-selector {
-  @apply flex gap-x-1;
+  @apply flex gap-x-1 justify-end;
   &__page {
     @apply block rounded px-3 py-1 bg-gray-200 transition-colors hover:bg-gray-300;
     &--select {
@@ -228,6 +228,27 @@ html {
   --dropdown-active-top-offset: 5px;
   --dropdown-top-offset: 15px;
 }
+
+.search-marked {
+  background-color: #ffee05;
+}
+
+.filter-form {
+  @apply flex gap-x-3;
+  select,
+  input {
+    @apply bg-white py-0.5 px-2 rounded placeholder:text-gray-500;
+  }
+
+  &__select--empty {
+    @apply text-gray-500;
+  }
+
+  button {
+    @apply text-gray-600 p-2 hover:text-gray-800 transition-colors duration-300;
+  }
+}
+
 
 @layer utilities {
   .header-user {

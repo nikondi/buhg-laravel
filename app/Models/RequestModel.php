@@ -7,16 +7,23 @@ use App\Enums\EducationType;
 use App\Enums\PickupType;
 use App\Enums\RequestStatus;
 use App\Observers\RequestObserver;
+use App\Traits\HighlightSearch;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 #[ObservedBy(RequestObserver::class)]
 class RequestModel extends Model
 {
+    use Searchable,
+        HighlightSearch;
+
     protected $table = 'requests';
 
     public function director(): BelongsTo
@@ -61,6 +68,32 @@ class RequestModel extends Model
         ];
     }
 
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query
+            ->orderByRaw("(case status
+              when 'new' then 1
+              when 'in_work' then 2
+              when 'ready_pickup' then 3
+              when 'duplicate' then 4
+              when 'downloaded_xml' then 5
+              when 'done' then 6
+              when 'declined' then 7
+              ELSE 8
+              end)")
+            ->orderBy('created_at');
+    }
+
+    public function scopeFiltered(Builder $query, Request $request): Builder
+    {
+        if($request->has('status'))
+            $query->where('status', $request->get('status'));
+        if($request->has('year'))
+            $query->where('report_year', $request->get('year'));
+
+        return $query;
+    }
+
     protected static function boot(): void
     {
         static::creating(function (RequestModel $model) {
@@ -74,6 +107,21 @@ class RequestModel extends Model
         });
 
         parent::boot();
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string)$this->id,
+            'inn' => (string)$this->inn,
+            'surname' => $this->surname,
+            'name' => $this->name,
+            'student_name' => (string)$this->student_name,
+            'student_surname' => (string)$this->student_surname,
+            'report_year' => $this->report_year,
+            'status' => $this->status->value,
+            'created_at' => $this->created_at->timestamp
+        ];
     }
 
     protected $fillable = [

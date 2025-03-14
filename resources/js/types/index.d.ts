@@ -136,11 +136,10 @@ export interface IRequestRow {
   created_at: string
   number: string
   status: TRequestStatus
-  name: string
-  surname: string
-  lastname: string
+  fullname: string
   phone: string
   inn: string
+  inn_marked: string
   report_year: string
   contract_cost: string
   contract_number: string

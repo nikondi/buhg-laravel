@@ -5,48 +5,59 @@ namespace App\Http\Controllers;
 use App\Enums\RequestStatus;
 use App\Http\Resources\RequestRowResource;
 use App\Models\RequestModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class WelcomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $query = RequestModel::query()
-            ->orderByRaw("(case status
-              when 'new' then 1
-              when 'in_work' then 2
-              when 'ready_pickup' then 3
-              when 'duplicate' then 4
-              when 'downloaded_xml' then 5
-              when 'done' then 6
-              when 'declined' then 7
-              ELSE 8
-              end)")
-            ->orderBy('created_at');
-
-        $filters = $request->validate([
-            'status' => 'nullable',
-            'year' => 'nullable',
-//            'search' => 'nullable',
-        ]);
-        $filters = array_map(fn($item) => $item === null?'':$item, $filters);
-
-        if(!empty($filters['status']))
-            $query->where('status', $filters['status']);
-        if(!empty($filters['year']))
-            $query->where('report_year', $filters['year']);
-
-        $requests = $query->paginate(30)
-            ->withQueryString();
-
-        $years = RequestModel::query()->distinct()->select('report_year')->pluck('report_year');
+        $years = RequestModel::query()->orderByDesc('report_year')->distinct()->select('report_year')->pluck('report_year');
         return page()
             ->title('Главная')
             ->render('Welcome', [
-                'requests' => RequestRowResource::collection($requests),
+                'requests' => Inertia::defer(function() use ($request) {
+                    $search = $this->getSearchQuery($request);
+
+                    if(!empty($search)) {
+                        $query = RequestModel::search($search)
+                            ->query(function (Builder $builder) use ($request) {
+                                /* @var Builder|RequestModel $builder */
+                                return $builder
+                                    ->filtered($request)
+                                    ->ordered();
+                            });
+                    }
+                    else {
+                        $query = RequestModel::query()
+                            ->ordered()
+                            ->filtered($request);
+                    }
+
+                    $requests = $query
+                        ->paginate(30)
+                        ->withQueryString();
+
+
+                    if(!empty($search)) {
+                        $requests->each(function(RequestModel $requestModel) use ($search) {
+                            $requestModel->highlightAttributes($search, [
+                                'name', 'surname', 'inn'
+                            ]);
+                        });
+                    }
+
+                    return RequestRowResource::collection($requests);
+                }),
                 'years' => $years->map(fn($year) => ['key' => $year, 'value' => $year]),
                 'statuses' => collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $item) => [$item->value => $item->shortLabel()]),
-                'filters' => $filters,
+                'filters' => fn() => collect(['search', 'year', 'status'])->mapWithKeys(fn($key) => [$key => $request->get($key, '')]),
             ]);
+    }
+
+    protected function getSearchQuery(Request $request, string $query = 'search'): string
+    {
+        return $request->str($query)->trim()->toString();
     }
 }
