@@ -11,12 +11,12 @@ trait HighlightSearch
         if (empty($search))
             return;
 
-        $pos = strpos(strtolower($attr), strtolower($search));
+        $pos = mb_strpos(mb_strtolower($attr), mb_strtolower($search));
 
         if ($pos !== false) {
-            $replaced = substr($attr, 0, $pos);
-            $replaced .= '<span class="search-marked">' . substr($attr, $pos, strlen($search)) . '</span>';
-            $replaced .= substr($attr, $pos + strlen($search));
+            $replaced = mb_substr($attr, 0, $pos);
+            $replaced .= '<span class="search-marked">' . mb_substr($attr, $pos, mb_strlen($search)) . '</span>';
+            $replaced .= mb_substr($attr, $pos + mb_strlen($search));
         } else {
             $replaced = $attr;
         }

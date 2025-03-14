@@ -58,14 +58,18 @@ services:
         volumes:
             - .:/var/www # Монтируем локальную папку в контейнер как /var/www
 
-    typesense:
-        image: typesense/typesense:27.1
-        restart: on-failure
+    meilisearch:
+        image: getmeili/meilisearch:latest
+        container_name: meilisearch
+        restart: unless-stopped
         ports:
-            - "8108:8108"
+            - "7720:7700"
+        environment:
+            MEILI_NO_ANALYTICS: ${MEILISEARCH_NO_ANALYTICS}
+            MEILI_NO_SENTRY: ${MEILISEARCH_NO_SENTRY}
+            MEILI_MASTER_KEY: ${MEILISEARCH_KEY}
         volumes:
-            - ./typesense-data:/data
-        command: '--data-dir /data --api-key=xyz --enable-cors'
+            - ./meilisearch-data:/meilisearch-data
 
 # Тома
 volumes:

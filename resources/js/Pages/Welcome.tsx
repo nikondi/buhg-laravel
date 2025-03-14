@@ -2,6 +2,7 @@ import {HeaderActions, HeaderTitle} from "@/Parts/Header";
 import React from "react";
 import {Deferred} from "@inertiajs/react";
 import {FilterForm, List} from "@/Features/Welcome/partials";
+import {Skeleton} from "@/Components";
 
 
 /*{filters && <form className="w-full flex gap-x-2 items-end shadow p-3 mt-2 rounded-md" onSubmit={handleSubmit}>
@@ -26,7 +27,7 @@ export default function Welcome() {
     </HeaderActions>
 
     <div className="container mt-5">
-      <Deferred data="requests" fallback={<div>Loading...</div>}>
+      <Deferred data="requests" fallback={<Skeleton style={{height: 400, marginTop: 48}}/>}>
         <List/>
       </Deferred>
     </div>
