@@ -1,11 +1,12 @@
 import {TRequestEditPage} from "@/Features/Request/types";
 import {HeaderActions, HeaderTitle} from "@/Parts/Header";
-import {Link, usePage} from "@inertiajs/react";
-import {Button, Fancybox, Icon} from "@/Components";
+import {Deferred, Link, usePage} from "@inertiajs/react";
+import {Button, Fancybox, Icon, Skeleton} from "@/Components";
 import {mergeClass} from "@/helpers";
 import useRequestForm, {RequestForm} from "@/Features/Request/contexts/RequestFormContext";
 import {Input, Select, Switcher, Textarea, XMLDownload} from "@/Features/Request/components";
-import {History} from "@/Features/Request/parts";
+import {Comments} from "@/Features/Request/parts";
+import React from "react";
 
 const onlyChars = (value: string) => value.replace(/[^A-zА-я]/, '');
 const onlyNumbers = (value: string) => value.replace(/\D/, '');
@@ -73,7 +74,9 @@ export default function Edit({request, documents}: TRequestEditPage) {
       }
     </div>
     <div className="container my-7">
-      <History requestId={request.id}/>
+      <Deferred data="comments" fallback={<Skeleton style={{height: 400, marginTop: 48}}/>}>
+        <Comments/>
+      </Deferred>
     </div>
 
   </>

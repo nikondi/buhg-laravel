@@ -58,7 +58,6 @@ class RequestResource extends JsonResource
             'director_id' => $this->director_id,
             'organization_id' => $this->organization_id,
 
-            'history_count' => $this->history_count,
             'changes_count' => $this->changes_count,
 
             'files' => $this->getFileUrls()

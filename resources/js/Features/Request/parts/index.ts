@@ -1,1 +1,1 @@
-export {default as History} from "./History"
+export {default as Comments} from "./Comments"

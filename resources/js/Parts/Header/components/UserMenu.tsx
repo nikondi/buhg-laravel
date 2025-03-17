@@ -2,6 +2,7 @@ import {useAuth, useOutsideClick} from "@/hooks";
 import {useState} from "react";
 import {mergeClass} from "@/helpers";
 import {Link} from "@inertiajs/react";
+import {UserAvatar} from "@/Components";
 
 export default function UserMenu() {
   const {user} = useAuth();
@@ -21,9 +22,7 @@ export default function UserMenu() {
           fill="currentColor"></path>
       </svg>
       <span>{user.name}</span>
-      <div className="header-user__image">
-        <img src="/assets/image/user.png" alt="" className=""/>
-      </div>
+      <UserAvatar user={user}/>
     </div>
     <div className="dropdown__list">
       <ul>

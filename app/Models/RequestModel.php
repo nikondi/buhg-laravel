@@ -36,9 +36,9 @@ class RequestModel extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function history(): HasMany
+    public function comments(): HasMany
     {
-        return $this->hasMany(History::class, 'request_id');
+        return $this->hasMany(Comment::class, 'request_id');
     }
 
     public function getFileUrls(): array

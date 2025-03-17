@@ -171,9 +171,9 @@ export interface IUser {
   role: 'manager' | 'admin'
 }
 
-export interface IHistory {
+export interface IComment {
   id: number
-  comment: string
+  text: string
   user: IUser
   request_id: number
   created_at: string

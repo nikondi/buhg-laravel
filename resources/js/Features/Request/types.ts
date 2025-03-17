@@ -1,4 +1,4 @@
-import {IRequest, KeyValue, PageProps} from "@/types";
+import {IComment, IRequest, KeyValue, PageProps, ResourceCollection} from "@/types";
 
 export type TRequestEditPage = PageProps<{
   request: IRequest,
@@ -6,6 +6,7 @@ export type TRequestEditPage = PageProps<{
   organizations: KeyValue[]
   documents: KeyValue[]
   statuses: KeyValue[]
+  comments: ResourceCollection<IComment>
 }>
 
 export type IRequestForm = {

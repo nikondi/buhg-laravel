@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RequestController;
@@ -24,6 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/request/{request}/history', [RequestController::class, 'history'])->name('request.history');
     Route::get('/request/{request}/xml', [RequestExportController::class, 'xml'])->name('request.xml');
     Route::get('/request/{request}/excel', [RequestExportController::class, 'excel'])->name('request.excel');
+
+    Route::resource('comments', CommentController::class);
 });
 
 Route::middleware(['guest'])->group(function () {
