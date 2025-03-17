@@ -9,6 +9,9 @@ import {useCallback} from "react";
 export default function Comments() {
   const {comments, auth} = usePage<TRequestEditPage>().props;
 
+  if(!comments)
+    return;
+
   return <div className="pb-6">
     <CommentForm/>
     <div className="flex flex-col gap-y-3">

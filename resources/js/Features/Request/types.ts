@@ -1,4 +1,4 @@
-import {IComment, IRequest, KeyValue, PageProps, ResourceCollection} from "@/types";
+import {IComment, IRequest, IUser, KeyValue, PageProps, ResourceCollection} from "@/types";
 
 export type TRequestEditPage = PageProps<{
   request: IRequest,
@@ -7,7 +7,21 @@ export type TRequestEditPage = PageProps<{
   documents: KeyValue[]
   statuses: KeyValue[]
   comments: ResourceCollection<IComment>
+  history: ResourceCollection<IHistory>
 }>
+
+interface IHistory {
+  id: number
+  user: IUser
+  body: {
+    key: string
+    old: string
+    new: string
+  }[]
+  comment: string
+  sended: boolean
+  created_at: string
+}
 
 export type IRequestForm = {
   status: string

@@ -6,7 +6,9 @@ use App\Enums\DocumentType;
 use App\Enums\EducationType;
 use App\Enums\PickupType;
 use App\Enums\RequestStatus;
+use App\Interfaces\HasHistoryInterface;
 use App\Observers\RequestObserver;
+use App\Traits\HasHistory;
 use App\Traits\HighlightSearch;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,10 +21,11 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 
 #[ObservedBy(RequestObserver::class)]
-class RequestModel extends Model
+class RequestModel extends Model implements HasHistoryInterface
 {
     use Searchable,
-        HighlightSearch;
+        HighlightSearch,
+        HasHistory;
 
     protected $table = 'requests';
 

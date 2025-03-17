@@ -12,7 +12,7 @@ export default function Welcome() {
     </HeaderActions>
 
     <div className="container mt-5">
-      <Deferred data="requests" fallback={<Skeleton style={{height: 400, marginTop: 48}}/>}>
+      <Deferred data="requests" fallback={<Skeleton style={{height: 400, marginTop: 64}}/>}>
         <List/>
       </Deferred>
     </div>

@@ -1,3 +1,6 @@
+@use "components/popup" as *;
+@use "components/dropdown" as *;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,9 +13,6 @@ html {
 #app {
   height: 100%;
 }
-
-@import "components/popup";
-@import "components/dropdown";
 
 .fancybox__container {
   z-index: 3020 !important;
@@ -316,6 +316,20 @@ html {
     opacity: 1;
   }
 }
+
+.request-tabs {
+  @apply flex gap-x-2 mt-5;
+  button {
+    @apply block px-2 py-1 border-b border-gray-300 transition-colors duration-300;
+    &:not(.active):hover {
+      @apply border-gray-500
+    }
+    &.active {
+      @apply border-blue-500
+    }
+  }
+}
+
 
 
 @layer utilities {

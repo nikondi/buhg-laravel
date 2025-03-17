@@ -8,6 +8,7 @@ use App\Enums\RequestStatus;
 use App\Helpers\DocFormatter;
 use App\Http\Requests\RequestUpdateRequest;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\HistoryResource;
 use App\Http\Resources\RequestResource;
 use App\Http\Resources\RequestShowResource;
 use App\Mail\RequestChangedMail;
@@ -48,7 +49,8 @@ class RequestController extends Controller
                         ->get();
 
                     return CommentResource::collection($comments);
-                })
+                }),
+                'history' => Inertia::optional(fn() => HistoryResource::collection($request->history()->orderByDesc('created_at')->get()))
             ]);
     }
 
