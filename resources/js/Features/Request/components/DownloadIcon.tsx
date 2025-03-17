@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {mergeClass} from "@/helpers";
 import {useOutsideClick} from "@/hooks";
+import {Icon} from "@/Components";
 
 type Props = {
   request_id: number
@@ -16,12 +17,24 @@ export default function XMLDownload({request_id}: Props) {
     </button>
 
     <ul className="dropdown__list">
-      <li><a href={route('request.excel', [request_id])} target="_blank">Excel</a></li>
-      <li><a href={route('request.xml', {request: request_id, _query: {'doc_type': 'inn'}})} target="_blank">XML с
-        ИНН</a>
+      <li>
+        <a href={route('request.excel', [request_id])} target="_blank" className="!flex items-center gap-x-2">
+          <Icon icon="excel" size="1.12em" className="!text-green-600"/>
+          <span>Excel</span>
+        </a>
       </li>
-      <li><a href={route('request.xml', {request: request_id, _query: {'doc_type': 'passport'}})} target="_blank">XML с
-        документом</a></li>
+      <li>
+        <a href={route('request.xml', {request: request_id, _query: {'doc_type': 'inn'}})} target="_blank" className="!flex items-center gap-x-2">
+          <Icon icon="xml" size="1.12em" className="!text-blue-600"/>
+          <span>XML с ИНН</span>
+        </a>
+      </li>
+      <li>
+        <a href={route('request.xml', {request: request_id, _query: {'doc_type': 'passport'}})} target="_blank" className="!flex items-center gap-x-2">
+          <Icon icon="xml" size="1.12em" className="!text-orange-500"/>
+          <span>XML с документом</span>
+        </a>
+      </li>
     </ul>
   </div>
 }
