@@ -64,13 +64,16 @@ class RequestController extends Controller
         if($data['student_doc_type'] && $data['student_doc_number'])
             $data['student_doc_number'] = DocFormatter::from($data['student_doc_type'], $data['student_doc_number']);
 
-        $request->update($data);
+        $request->fill($data);
+        $is_dirty = $request->isDirty();
+        $request->save();
 
         if($_request->get('save_history')) {
             if(!empty($request->email)) {
-                $history = $request->history()->oldest('id')->first();
-                if($history)
+                if($is_dirty) {
+                    $history = $request->history()->oldest('id')->first();
                     HistoryService::send($request, $history->id, $_request->get('comment'));
+                }
                 else if(!empty($_request->get('comment'))) {
                     $history = History::query()->create([
                         'old_body' => [],
@@ -92,15 +95,6 @@ class RequestController extends Controller
 
         return response()
             ->json(new RequestShowResource($request));
-    }
-
-    public function history($request) {
-        $history = Comment::query()
-            ->where('request_id', $request)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return CommentResource::collection($history);
     }
 
     public function sendHistory(Request $httpRequest, RequestModel $request)

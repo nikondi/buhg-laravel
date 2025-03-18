@@ -22,7 +22,6 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(['hasRole:admin']);
 
     Route::resource('request', RequestController::class);
-    Route::get('/request/{request}/history', [RequestController::class, 'history'])->name('request.history');
     Route::get('/request/{request}/xml', [RequestExportController::class, 'xml'])->name('request.xml');
     Route::get('/request/{request}/excel', [RequestExportController::class, 'excel'])->name('request.excel');
     Route::post('/request/{request}/send_history', [RequestController::class, 'sendHistory'])->name('request.send-history');
