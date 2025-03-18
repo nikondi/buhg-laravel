@@ -3,6 +3,7 @@ import {mergeClass} from "@/helpers";
 import {RequestRow} from "@/Features/Request/components";
 import React from "react";
 import {TWelcomePage} from "@/Features/Welcome/types";
+import {SimpleTable} from "@/Components";
 
 export default function List() {
   const {requests} = usePage<TWelcomePage>().props;
@@ -27,7 +28,7 @@ export default function List() {
             onClick={(e) => !requests.links.next && e.preventDefault()}></Link>
     </div>
 
-    <table className="simple-table my-4 text-sm">
+    <SimpleTable className="my-4 text-sm">
       <thead>
       <tr>
         <th>Номер<br/>справки</th>
@@ -49,7 +50,7 @@ export default function List() {
         : <tr><td colSpan={11} className="text-center text-base text-gray-500">Ничего не найдено</td></tr>
       }
       </tbody>
-    </table>
+    </SimpleTable>
 
   </>
 }

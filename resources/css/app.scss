@@ -79,6 +79,11 @@ html {
   }
 }
 
+.simple-table-wrapper {
+  width: 100%;
+  overflow: auto;
+}
+
 .director-form {
   select {
     @apply border border-gray-300 rounded px-2 py-0.5 bg-white;
@@ -332,14 +337,12 @@ html {
 
 
 .history-inner-table {
+  @apply bg-white;
   th {
     @apply bg-blue-50 text-right;
   }
   td, th {
     @apply py-1 px-2;
-  }
-  td table {
-    @apply bg-white;
   }
   td table th {
     @apply bg-orange-50;

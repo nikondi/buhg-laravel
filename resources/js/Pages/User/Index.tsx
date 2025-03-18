@@ -1,7 +1,7 @@
 import {HeaderActions, HeaderTitle} from "@/Parts/Header";
 import {useState} from "react";
 import {Create} from "@/Features/User/parts";
-import {Icon} from "@/Components";
+import {Icon, SimpleTable} from "@/Components";
 import {IUser, ResourceCollection} from "@/types";
 import {UserRow} from "@/Features/User/components";
 
@@ -23,7 +23,7 @@ export default function Index({users}: Props) {
     </HeaderActions>
     <div className="container">
       {creating && <Create decline={() => setCreating(false)}/>}
-      <table className="simple-table my-4">
+      <SimpleTable className="my-4">
         <thead>
         <tr>
           <th>ID</th>
@@ -36,7 +36,7 @@ export default function Index({users}: Props) {
         <tbody>
           {users.data.map((user) => <UserRow key={user.id} user={user}/>)}
         </tbody>
-      </table>
+      </SimpleTable>
     </div>
   </>
 }

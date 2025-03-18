@@ -3,7 +3,7 @@ import {DirectorRow} from "@/Features/Director/components";
 import {HeaderActions, HeaderTitle} from "@/Parts/Header";
 import {useState} from "react";
 import {Create} from "@/Features/Director/parts";
-import {Icon} from "@/Components";
+import {Icon, SimpleTable} from "@/Components";
 
 export default function Index({directors}: TDirectorIndexPage) {
   const [creating, setCreating] = useState(false);
@@ -19,7 +19,7 @@ export default function Index({directors}: TDirectorIndexPage) {
     </HeaderActions>
     <div className="container">
       {creating && <Create decline={() => setCreating(false)}/>}
-      <table className="simple-table my-4">
+      <SimpleTable className="my-4">
         <thead>
         <tr>
           <th style={{width: 285}}>Признак лица</th>
@@ -31,7 +31,7 @@ export default function Index({directors}: TDirectorIndexPage) {
         <tbody>
           {directors.data.map((director) => <DirectorRow key={director.id} director={director}/>)}
         </tbody>
-      </table>
+      </SimpleTable>
     </div>
   </>
 }

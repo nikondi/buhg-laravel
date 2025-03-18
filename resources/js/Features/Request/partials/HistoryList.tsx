@@ -1,12 +1,13 @@
 import {usePage} from "@inertiajs/react";
 import {IHistoryBody, TRequestEditPage} from "@/Features/Request/types";
+import {SimpleTable} from "@/Components";
 
 export default function HistoryList() {
   const {history} = usePage<TRequestEditPage>().props;
 
   return <div>
     {history?.data.length > 0
-      ? <table className="simple-table">
+      ? <SimpleTable>
         <thead>
         <tr>
         <th>Дата</th>
@@ -31,7 +32,7 @@ export default function HistoryList() {
           <td>{h.sended?'Да':'Нет'}</td>
         </tr>)}
         </tbody>
-    </table>
+    </SimpleTable>
       : <div className="text-gray-600">Ничего нет...</div>
     }
   </div>
@@ -41,8 +42,11 @@ function renderValue(value: unknown){
   if (!value)
     return <span className="text-gray-500">Пусто</span>;
 
-  if(typeof value == 'string' || typeof value == 'number')
+  if(typeof value == 'string' || typeof value == 'number') {
+    if(value == 'Не известно')
+      return <span className="text-gray-500">{value}</span>;
     return value;
+  }
 
   if(Array.isArray(value) || typeof value == 'object') {
     return <table style={{width: "100%"}}>
@@ -71,7 +75,7 @@ type HistoryBodyRowProps = {
 function HistoryBodyRow({item}: HistoryBodyRowProps) {
   return <tr>
     <th>{item.key}</th>
-    <td>{renderValue(item.old)}</td>
-    <td>{renderValue(item.new)}</td>
+    <td style={{overflowWrap: 'anywhere'}}>{renderValue(item.old)}</td>
+    <td style={{overflowWrap: 'anywhere'}}>{renderValue(item.new)}</td>
   </tr>
 }

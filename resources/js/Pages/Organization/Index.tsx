@@ -1,7 +1,7 @@
 import {HeaderActions, HeaderTitle} from "@/Parts/Header";
 import {useState} from "react";
 import {Create} from "@/Features/Organization/parts";
-import {Icon} from "@/Components";
+import {Icon, SimpleTable} from "@/Components";
 import {TOrganizationIndexPage} from "@/Features/Organization/types";
 import {OrganizationRow} from "@/Features/Organization/components";
 
@@ -19,7 +19,7 @@ export default function Index({organizations}: TOrganizationIndexPage) {
     </HeaderActions>
     <div className="container">
       {creating && <Create decline={() => setCreating(false)}/>}
-      <table className="simple-table my-4">
+      <SimpleTable className="my-4">
         <thead>
         <tr>
           <th>Название</th>
@@ -31,7 +31,7 @@ export default function Index({organizations}: TOrganizationIndexPage) {
         <tbody>
           {organizations.data.map((organization) => <OrganizationRow key={organization.id} organization={organization}/>)}
         </tbody>
-      </table>
+      </SimpleTable>
     </div>
   </>
 }

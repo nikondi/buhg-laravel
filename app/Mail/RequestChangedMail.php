@@ -2,15 +2,11 @@
 
 namespace App\Mail;
 
-use App\Enums\DocumentType;
-use App\Enums\EducationType;
-use App\Enums\PickupType;
-use App\Enums\RequestStatus;
 use App\Helpers\RequestFormatter;
 use App\Models\RequestModel;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -20,11 +16,6 @@ class RequestChangedMail extends Mailable
     use Queueable, SerializesModels;
 
     protected array $dirty;
-    protected array $dirty_except = [
-        'id', 'uuid',
-        'director_id', 'organization_id',
-        'changes_count', 'files'
-    ];
 
     /**
      * Create a new message instance.
@@ -66,7 +57,7 @@ class RequestChangedMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {
@@ -76,8 +67,9 @@ class RequestChangedMail extends Mailable
     protected function prepareDirty(): void
     {
         $dirty = $this->request->getDirty();
-        foreach ($this->dirty_except as $key)
+        foreach (RequestFormatter::exceptFields() as $key) {
             unset($dirty[$key]);
+        }
 
         $this->dirty = array_map(function ($key, $value) {
             return [
