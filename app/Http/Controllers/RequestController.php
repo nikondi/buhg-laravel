@@ -75,7 +75,7 @@ class RequestController extends Controller
                     HistoryService::send($request, $history->id, $_request->get('comment'));
                 }
                 else if(!empty($_request->get('comment'))) {
-                    $history = History::query()->create([
+                    $history = $request->history()->create([
                         'old_body' => [],
                         'body' => [],
                         'comment' => $_request->get('comment'),
