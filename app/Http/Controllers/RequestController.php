@@ -10,6 +10,7 @@ use App\Http\Requests\RequestUpdateRequest;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\HistoryResource;
 use App\Http\Resources\RequestResource;
+use App\Http\Resources\RequestRowResource;
 use App\Http\Resources\RequestShowResource;
 use App\Mail\RequestChangedMail;
 use App\Models\Director;
@@ -18,12 +19,65 @@ use App\Models\History;
 use App\Models\Organization;
 use App\Models\RequestModel;
 use App\Services\HistoryService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class RequestController extends Controller
 {
+    public function index(Request $request)
+    {
+        return page()
+            ->title('Главная')
+            ->render('Welcome', [
+                'requests' => Inertia::defer(function() use ($request) {
+                    $search = $this->getSearchQuery($request);
+
+                    if(!empty($search)) {
+                        $query = RequestModel::search($search)
+                            ->query(function (Builder $builder) use ($request) {
+                                /* @var Builder|RequestModel $builder */
+                                return $builder
+                                    ->filtered($request)
+                                    ->ordered();
+                            });
+                    }
+                    else {
+                        $query = RequestModel::query()
+                            ->ordered()
+                            ->filtered($request);
+                    }
+
+                    $requests = $query
+                        ->paginate(30)
+                        ->withQueryString();
+
+
+                    if(!empty($search)) {
+                        $requests->each(function(RequestModel $requestModel) use ($search) {
+                            $requestModel->highlightAttributes($search, [
+                                'name', 'surname', 'inn'
+                            ]);
+                        });
+                    }
+
+                    return RequestRowResource::collection($requests);
+                }),
+                'years' => function() {
+                    $years = RequestModel::query()->orderByDesc('report_year')->distinct()->select('report_year')->pluck('report_year');
+                    return $years->map(fn($year) => ['key' => $year, 'value' => $year]);
+                },
+                'statuses' => fn() => collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $item) => [$item->value => $item->shortLabel()]),
+                'filters' => fn() => collect(['query', 'year', 'status'])->mapWithKeys(fn($key) => [$key => $request->get($key, '')]),
+            ]);
+    }
+
+    protected function getSearchQuery(Request $request, string $query = 'query'): string
+    {
+        return $request->str($query)->trim()->toString();
+    }
+
     public function destroy(RequestModel $request)
     {
         $request->delete();
