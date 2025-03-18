@@ -1,5 +1,5 @@
 import {usePage} from "@inertiajs/react";
-import {TRequestEditPage} from "@/Features/Request/types";
+import {IHistoryBody, TRequestEditPage} from "@/Features/Request/types";
 
 export default function HistoryList() {
   const {history} = usePage<TRequestEditPage>().props;
@@ -11,7 +11,7 @@ export default function HistoryList() {
         <tr>
         <th>Дата</th>
         <th>Пользователь</th>
-        <th>Изменения</th>
+        <th>Изменения <span className="text-xs font-normal text-gray-500">(Поле/Старое/Новое)</span></th>
         <th>Комментарий</th>
         <th>Отправлено</th>
         </tr>
@@ -21,13 +21,9 @@ export default function HistoryList() {
           <td>{h.created_at}</td>
           <td>{h.user.name}</td>
           <td>
-            <table style={{width: "100%"}}>
+            <table style={{width: "100%"}} className="history-inner-table">
             <tbody>
-            {h.body.map(({key, old, new: fieldNew}) => <tr key={key}>
-              <td>{key}</td>
-              <td>{old}</td>
-              <td>{fieldNew}</td>
-            </tr>)}
+            {h.body.map((item) => <HistoryBodyRow item={item} key={item.key}/>)}
             </tbody>
             </table>
           </td>
@@ -39,4 +35,43 @@ export default function HistoryList() {
       : <div className="text-gray-600">Ничего нет...</div>
     }
   </div>
+}
+
+function renderValue(value: unknown){
+  if (!value)
+    return <span className="text-gray-500">Пусто</span>;
+
+  if(typeof value == 'string' || typeof value == 'number')
+    return value;
+
+  if(Array.isArray(value) || typeof value == 'object') {
+    return <table style={{width: "100%"}}>
+      <tbody>
+      {
+        Array.isArray(value)
+        ? value.map((item, i) => <tr key={i}>
+          <td>{renderValue(item)}</td>
+        </tr>)
+        : Object.entries(value).map(([key, val]) => <tr key={key}>
+          <th>{key}</th>
+          <td>{renderValue(val)}</td>
+        </tr>)
+      }
+      </tbody>
+    </table>
+  }
+
+
+}
+
+type HistoryBodyRowProps = {
+  item: IHistoryBody
+}
+
+function HistoryBodyRow({item}: HistoryBodyRowProps) {
+  return <tr>
+    <th>{item.key}</th>
+    <td>{renderValue(item.old)}</td>
+    <td>{renderValue(item.new)}</td>
+  </tr>
 }

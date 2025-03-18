@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\RequestFormatter;
 use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,10 +14,13 @@ class HistoryResource extends JsonResource
     {
         $body = [];
         foreach ($this->body as $key => $value) {
+            $old_value = isset($this->old_body[$key])?RequestFormatter::formatValue($key, $this->old_body[$key]):'Не известно';
+            $value = RequestFormatter::formatValue($key, $this->body[$key]);
+
             $body[] = [
-                'key' => $key,
-                'old' => $this->old_body[$key] ?? 'Не известно',
-                'new' => $this->body[$key]
+                'key' => trans_df('request.changed.'.$key, default: $key),
+                'old' => $old_value,
+                'new' => $value
             ];
         }
 

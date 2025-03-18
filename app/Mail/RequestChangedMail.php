@@ -6,6 +6,7 @@ use App\Enums\DocumentType;
 use App\Enums\EducationType;
 use App\Enums\PickupType;
 use App\Enums\RequestStatus;
+use App\Helpers\RequestFormatter;
 use App\Models\RequestModel;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -22,7 +23,7 @@ class RequestChangedMail extends Mailable
     protected array $dirty_except = [
         'id', 'uuid',
         'director_id', 'organization_id',
-        'changes_count',
+        'changes_count', 'files'
     ];
 
     /**
@@ -80,34 +81,14 @@ class RequestChangedMail extends Mailable
 
         $this->dirty = array_map(function ($key, $value) {
             return [
-                'value' => $this->formatValue($key, $value),
-                'old_value' => $this->formatValue($key, $this->request->getOriginal($key)),
+                'value' => RequestFormatter::formatValue($key, $value),
+                'old_value' => RequestFormatter::formatValue($key, $this->request->getOriginal($key)),
                 'label' => $this->getLabel($key),
             ];
         }, array_keys($dirty), $dirty);
     }
 
-    protected function formatValue($key, $value)
-    {
-        return match ($key) {
-            'status' => (($value instanceof RequestStatus)?$value:RequestStatus::from($value))->label(),
-            'education_type' => (($value instanceof EducationType)?$value:EducationType::from($value))->label(),
-            'pickup_type' => (($value instanceof PickupType)?$value:PickupType::from($value))->label(),
 
-            'birthdate', 'student_birthdate',
-            'doc_date', 'student_doc_date',
-            'contract_date' => (new Carbon($value))->format('d.m.Y'),
-
-            'doc_type', 'student_doc_type' => (($value instanceof DocumentType)?$value:DocumentType::from($value))->label(),
-
-            'contract_cost' => number_format($value, 2, '.', ' ').'р.',
-
-            'same_student' => $value?'Да':'Нет',
-            'phone', 'student_phone' => '+7'.$value,
-
-            default => $value,
-        };
-    }
 
     protected function getLabel($key): string
     {

@@ -10,14 +10,16 @@ export type TRequestEditPage = PageProps<{
   history: ResourceCollection<IHistory>
 }>
 
-interface IHistory {
+export interface IHistoryBody {
+  key: string
+  old: string
+  new: string
+}
+
+export interface IHistory {
   id: number
   user: IUser
-  body: {
-    key: string
-    old: string
-    new: string
-  }[]
+  body: IHistoryBody[]
   comment: string
   sended: boolean
   created_at: string

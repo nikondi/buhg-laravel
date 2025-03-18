@@ -331,6 +331,20 @@ html {
 }
 
 
+.history-inner-table {
+  th {
+    @apply bg-blue-50 text-right;
+  }
+  td, th {
+    @apply py-1 px-2;
+  }
+  td table {
+    @apply bg-white;
+  }
+  td table th {
+    @apply bg-orange-50;
+  }
+}
 
 @layer utilities {
   .header-user {

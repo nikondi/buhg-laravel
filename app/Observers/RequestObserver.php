@@ -22,6 +22,7 @@ class RequestObserver
         if(!$requestModel->number) {
             $requestModel->number = str_pad($requestModel->id, 12, "0", STR_PAD_LEFT);
         }
-        $this->track($requestModel, comment: request()->get('comment', null));
+        if(request()->user()?->login != 'site')
+            $this->track($requestModel, comment: request()->get('comment', null));
     }
 }
