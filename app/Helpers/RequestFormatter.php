@@ -10,15 +10,6 @@ use Carbon\Carbon;
 
 class RequestFormatter
 {
-    public static function exceptFields(): array
-    {
-        return [
-            'id', 'uuid',
-            'director_id', 'organization_id',
-            'changes_count', 'files'
-        ];
-    }
-
     public static function formatValue($key, $value)
     {
         return match ($key) {

@@ -1,12 +1,59 @@
-import {usePage} from "@inertiajs/react";
+import {router, usePage} from "@inertiajs/react";
 import {IHistory, IHistoryBody, TRequestEditPage} from "@/Features/Request/types";
-import {SimpleTable} from "@/Components";
-import {useState} from "react";
+import {Button, Check, SimpleTable} from "@/Components";
+import {useCallback, useState} from "react";
+import toast from "react-hot-toast";
+import {Textarea} from "@/Components/Form";
+import {useAxios} from "@/hooks";
+import {mergeClass} from "@/helpers";
 
 export default function HistoryList() {
-  const {history} = usePage<TRequestEditPage>().props;
+  const {history, request} = usePage<TRequestEditPage>().props;
+  const {data, setData, post, reset} = useAxios({
+    histories: [],
+    comment: ''
+  });
+
+  const onToggle = (id: number, selected: boolean) => {
+    const new_histories = [...data.histories].filter((item) => item != id);
+    if(selected)
+      new_histories.push(id);
+    setData('histories', new_histories);
+  }
+  const send = useCallback(() => {
+    if(data.histories.length == 0)
+      return;
+
+    const toast_id = toast.loading('Отправка');
+
+    post(route('request.send-history', [request.id]), {
+      onSuccess: ({success}) => {
+        if(!success) {
+          toast.error('Произошла ошибка')
+          return;
+        }
+
+        reset();
+
+        toast.success('Отправлено');
+        router.reload({
+          only: ['history']
+        });
+      },
+      onError: () => toast.error('Произошла ошибка'),
+      onFinally: () => toast.dismiss(toast_id)
+    });
+  }, [data]);
 
   return <div>
+    <div className="mb-4">
+      {data.histories.length > 0 && <Textarea label="Комментарий" value={data.comment}
+                                              className="mb-2"
+                                              onChange={(e) => setData('comment', e.target.value)}/>}
+      <Button className="btn--small !w-auto !px-4" onClick={send} disabled={data.histories.length == 0}>
+        Оповестить плательщика
+      </Button>
+    </div>
     {history?.data.length > 0
       ? <SimpleTable>
         <thead>
@@ -19,7 +66,7 @@ export default function HistoryList() {
         </tr>
         </thead>
         <tbody className="text-xs">
-        {history.data.map((h) => <HistoryRow history={h} key={h.id}/>)}
+        {history.data.map((h) => <HistoryRow history={h} onToggle={onToggle} checked={data.histories.includes(h.id)} key={h.id}/>)}
         </tbody>
     </SimpleTable>
       : <div className="text-gray-600">Ничего нет...</div>
@@ -29,12 +76,14 @@ export default function HistoryList() {
 
 type HistoryRowProps = {
   history: IHistory
+  onToggle: (id: number, selected: boolean) => void
+  checked: boolean
 }
 
-function HistoryRow({history}: HistoryRowProps) {
+function HistoryRow({history, onToggle, checked}: HistoryRowProps) {
   const [opened, setOpened] = useState(false);
 
-  return <tr>
+  return <tr className={mergeClass(history.sended && "bg-green-50")}>
     <td>{history.created_at}</td>
     <td>{history.user.name}</td>
     <td>
@@ -48,7 +97,15 @@ function HistoryRow({history}: HistoryRowProps) {
       </table>}
     </td>
     <td className="whitespace-pre-wrap">{history.comment}</td>
-    <td>{history.sended ? 'Да' : 'Нет'}</td>
+    <td>
+      <div className="flex justify-between">
+        {history.sended
+        ? <span className="text-green-700">Отправлено</span>
+        : <span className="text-orange-600">Не отправлено</span>}
+
+        <Check onChange={(checked) => onToggle(history.id, checked)} checked={checked} />
+      </div>
+    </td>
   </tr>
 }
 

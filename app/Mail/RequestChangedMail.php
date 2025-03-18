@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Helpers\RequestFormatter;
 use App\Models\RequestModel;
+use App\Services\HistoryService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
@@ -22,10 +23,10 @@ class RequestChangedMail extends Mailable
      */
     public function __construct(
         public RequestModel $request,
+        public array $fields,
         public ?string $comment,
     )
     {
-        $this->prepareDirty();
     }
 
     /**
@@ -49,7 +50,7 @@ class RequestChangedMail extends Mailable
             with: [
                 'request' => $this->request,
                 'comment' => $this->comment,
-                'dirty' => $this->dirty
+                'dirty' => $this->fields
             ]
         );
     }
@@ -62,22 +63,6 @@ class RequestChangedMail extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    protected function prepareDirty(): void
-    {
-        $dirty = $this->request->getDirty();
-        foreach (RequestFormatter::exceptFields() as $key) {
-            unset($dirty[$key]);
-        }
-
-        $this->dirty = array_map(function ($key, $value) {
-            return [
-                'value' => RequestFormatter::formatValue($key, $value),
-                'old_value' => RequestFormatter::formatValue($key, $this->request->getOriginal($key)),
-                'label' => $this->getLabel($key),
-            ];
-        }, array_keys($dirty), $dirty);
     }
 
 

@@ -14,8 +14,11 @@ use App\Http\Resources\RequestShowResource;
 use App\Mail\RequestChangedMail;
 use App\Models\Director;
 use App\Models\Comment;
+use App\Models\History;
 use App\Models\Organization;
 use App\Models\RequestModel;
+use App\Services\HistoryService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
@@ -61,15 +64,23 @@ class RequestController extends Controller
         if($data['student_doc_type'] && $data['student_doc_number'])
             $data['student_doc_number'] = DocFormatter::from($data['student_doc_type'], $data['student_doc_number']);
 
-        $request->fill($data);
+        $request->update($data);
 
         if($_request->get('save_history')) {
-            if(!empty($request->email) && ($request->isDirty() || !empty($_request->get('comment')))) {
-                Mail::to($request->email)->send(new RequestChangedMail($request, $_request->get('comment')));
+            if(!empty($request->email)) {
+                $history = $request->history()->oldest('id')->first();
+                if($history)
+                    HistoryService::send($request, $history->id, $_request->get('comment'));
+                else if(!empty($_request->get('comment'))) {
+                    $history = History::query()->create([
+                        'old_body' => [],
+                        'body' => [],
+                        'comment' => $_request->get('comment'),
+                    ]);
+                    HistoryService::send($request, $history->id, $_request->get('comment'));
+                }
             }
         }
-
-        $request->save();
 
         return back();
     }
@@ -90,5 +101,18 @@ class RequestController extends Controller
             ->get();
 
         return CommentResource::collection($history);
+    }
+
+    public function sendHistory(Request $httpRequest, RequestModel $request)
+    {
+        $data = $httpRequest->validate([
+            'histories' => 'array',
+            'comment' => 'nullable'
+        ]);
+
+        $success = HistoryService::send($request, $data['histories'], $data['comment']);
+
+        return response()
+            ->json(['success' => $success]);
     }
 }
