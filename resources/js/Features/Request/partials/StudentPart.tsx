@@ -4,7 +4,7 @@ import useRequestForm from "../contexts/RequestFormContext";
 import {mergeClass} from "@/helpers";
 import {Input, Select} from "../components";
 import React from "react";
-import {inn, onlyChars, phone} from "../helpers";
+import {fioChars, inn, phone} from "../helpers";
 
 export default function StudentPart() {
   const {documents} = usePage<TRequestEditPage>().props;
@@ -14,9 +14,9 @@ export default function StudentPart() {
     <div className="text-sm font-bold text-gray-600 text-center mb-3">Данные ФЛ, которому оказаны образовательные
       услуги
     </div>
-    <Input label="Фамилия" name="student_surname" format={onlyChars} required={!data.same_student}/>
-    <Input label="Имя" name="student_name" format={onlyChars} required={!data.same_student}/>
-    <Input label="Отчество" name="student_lastname" format={onlyChars}/>
+    <Input label="Фамилия" name="student_surname" format={fioChars} required={!data.same_student}/>
+    <Input label="Имя" name="student_name" format={fioChars} required={!data.same_student}/>
+    <Input label="Отчество" name="student_lastname" format={fioChars}/>
     <Input type="date" label="Дата рождения" name="student_birthdate" required={!data.same_student}/>
     <Input label="ИНН" name="student_inn" format={inn} required={!data.same_student}/>
     <Select label="Документ" name="student_doc_type" required={!data.same_student}>

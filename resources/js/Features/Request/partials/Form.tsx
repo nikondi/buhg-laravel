@@ -3,7 +3,7 @@ import {RequestForm} from "../contexts/RequestFormContext";
 import React from "react";
 import {usePage} from "@inertiajs/react";
 import {TRequestEditPage} from "../types";
-import {inn, onlyChars, phone} from "../helpers";
+import {fioChars, inn, phone} from "../helpers";
 import StudentPart from "./StudentPart";
 import Sidebar from "./Sidebar";
 import {Fancybox} from "@/Components";
@@ -18,9 +18,9 @@ export default function Form() {
           <div className="text-sm font-bold text-gray-600 text-center mb-3">Данные ФЛ, оплатившего образовательные
             услуги
           </div>
-          <Input label="Фамилия" name="surname" format={onlyChars} required/>
-          <Input label="Имя" name="name" format={onlyChars} required/>
-          <Input label="Отчество" name="lastname" format={onlyChars} required/>
+          <Input label="Фамилия" name="surname" format={fioChars} required/>
+          <Input label="Имя" name="name" format={fioChars} required/>
+          <Input label="Отчество" name="lastname" format={fioChars} required/>
           <Input type="date" label="Дата рождения" name="birthdate" required/>
           <Input label="ИНН" name="inn" format={inn} required/>
           <Select label="Документ" name="doc_type">
