@@ -11,7 +11,7 @@ class RequestUpdateRequest extends FormRequest
         return [
             'director_id' => ['nullable', 'exists:directors,id'],
             'organization_id' => ['nullable', 'exists:organizations,id'],
-            'number' => ['nullable', 'digits:12', 'unique:requests,number'],
+            'number' => ['nullable', 'digits:12', 'string', 'unique:requests,number,' . $this->route('request')->id],
             'status' => ['required'],
             'education_type' => ['required'],
             'pickup_type' => ['required'],
