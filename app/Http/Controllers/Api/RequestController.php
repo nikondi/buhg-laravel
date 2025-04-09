@@ -36,11 +36,12 @@ class RequestController extends Controller
                 ->error(sprintf('Error sending request #%s: %s', $requestModel->number, $e->getMessage()));
         }
 
-        try {
-            $files = $request->file('files');
-            $file_names = [];
-            $not_uploaded = [];
+        $files = $request->file('files', []);
 
+        $file_names = [];
+        $not_uploaded = [];
+
+        try {
             foreach ($files as $file) {
                 $filename = $file->getClientOriginalName();
                 if($file->storeAs($requestModel->id, $filename, 'requests'))
@@ -48,18 +49,20 @@ class RequestController extends Controller
                 else
                     $not_uploaded[] = $file;
             }
-            $requestModel->update(['files' => $file_names]);
         }
         catch (Throwable $e) {
             Log::channel('requests')
                 ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $e->getMessage()));
-            if(!empty($not_uploaded)) {
-                foreach ($not_uploaded as $file) {
-                    Log::channel('requests')
-                        ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $file->getClientOriginalName().' ('.$file->getError().'): '.$file->getSize()));
-                }
+        }
+
+        if(!empty($not_uploaded)) {
+            foreach ($not_uploaded as $file) {
+                Log::channel('requests')
+                    ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $file->getClientOriginalName().' ('.$file->getError().'): '.$file->getSize()));
             }
         }
+
+        $requestModel->update(['files' => empty($file_names)?null:$file_names]);
 
         return response()->json([
             'success' => true,
