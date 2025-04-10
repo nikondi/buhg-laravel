@@ -18,7 +18,8 @@ class RequestController extends Controller
         $data = $request->validated();
 
         $data['doc_number'] = DocFormatter::from($data['doc_type'], $data['doc_number']);
-        if($data['student_doc_type'] && $data['student_doc_number'])
+
+        if(!empty($data['student_doc_type']) && !empty($data['student_doc_number']))
             $data['student_doc_number'] = DocFormatter::from($data['student_doc_type'], $data['student_doc_number']);
 
         if(empty($data['student_surname']))
@@ -52,7 +53,7 @@ class RequestController extends Controller
         }
         catch (Throwable $e) {
             Log::channel('requests')
-                ->error(sprintf('Error upload file #%s: %s', $requestModel->number, $e->getMessage()));
+                ->error(sprintf('Error upload files #%s: %s', $requestModel->number, $e->getMessage()));
         }
 
         if(!empty($not_uploaded)) {
@@ -62,7 +63,7 @@ class RequestController extends Controller
             }
         }
 
-        $requestModel->update(['files' => empty($file_names)?null:$file_names]);
+        $requestModel->update(['files' => empty($file_names)?null:array_filter($file_names, fn($item) => is_string($item))]);
 
         return response()->json([
             'success' => true,

@@ -29,7 +29,7 @@ class LogApiRequests
         $response = $next($request);
 
         // Log the response
-        Log::channel($channel)->info("API Response: {$response->status()}, {$request->fullUrl()}", [
+        Log::channel($channel)->{$response->getStatusCode() == 200?"info":"error"}("API Response: {$response->status()}, {$request->fullUrl()}", [
             'headers' => $response->headers->all(),
             'body' => $response->getContent(),
         ]);
