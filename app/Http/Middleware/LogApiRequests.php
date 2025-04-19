@@ -30,7 +30,7 @@ class LogApiRequests
         // Log the response
         Log::channel($channel)->{$response->getStatusCode() == 200?"info":"error"}("API Response: {$response->status()}, {$request->fullUrl()}", [
             'headers' => $response->headers->all(),
-            'body' => $response->getContent(),
+            'body' => $response->getStatusCode() == 500?(json_decode($response->getContent(), JSON_OBJECT_AS_ARRAY)['message'] ?? $response->getContent()):$response->getContent(),
         ]);
 
         return $response;
