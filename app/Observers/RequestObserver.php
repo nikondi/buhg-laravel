@@ -27,6 +27,6 @@ class RequestObserver
     }
 
     public function getLastNumber(): int {
-        return RequestModel::selectRaw("number::int as trimmed_number")->orderByDesc('trimmed_number')->first()->trimmed_number ?? 0;
+        return RequestModel::selectRaw("coalesce(number::int, 0) as trimmed_number")->orderByDesc('trimmed_number')->first()->trimmed_number ?? 0;
     }
 }
