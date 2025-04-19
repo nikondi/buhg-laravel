@@ -12,7 +12,7 @@ class RequestObserver
     public function created(RequestModel $requestModel): void
     {
         if(!$requestModel->number) {
-            $requestModel->number = str_pad($requestModel->id, 12, "0", STR_PAD_LEFT);
+            $requestModel->number = str_pad($this->getLastNumber() + 1, 12, "0", STR_PAD_LEFT);
             $requestModel->save();
         }
     }
@@ -20,9 +20,13 @@ class RequestObserver
     public function updating(RequestModel $requestModel): void
     {
         if(!$requestModel->number) {
-            $requestModel->number = str_pad($requestModel->id, 12, "0", STR_PAD_LEFT);
+            $requestModel->number = str_pad($this->getLastNumber() + 1, 12, "0", STR_PAD_LEFT);
         }
         if(request()->user()?->login != 'site')
             $this->track($requestModel, comment: request()->get('comment', null));
+    }
+
+    public function getLastNumber(): int {
+        return RequestModel::selectRaw("number::int as trimmed_number")->orderByDesc('trimmed_number')->first()->trimmed_number ?? 0;
     }
 }
