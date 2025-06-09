@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => env('AUTH_WEB_PROVIDER', 'ldap'),
         ],
     ],
 
@@ -60,7 +60,7 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'ldap' => [
             'driver' => 'ldap',
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
             'rules' => [],
@@ -75,10 +75,10 @@ return [
             ],
         ],
 
-        // 'users' => [
-        //    'driver' => 'eloquent',
-        //    'model' => env('AUTH_MODEL', App\Models\User::class),
-        // ],
+         'users' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\User::class),
+         ],
 
         // 'users' => [
         //     'driver' => 'database',

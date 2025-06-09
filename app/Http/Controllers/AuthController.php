@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Auth\HandlerInterface;
+use App\DTO\LoginDTO;
 use App\Exceptions\LoginFailedException;
-use App\Http\Requests\LoginRequest;
-use App\Ldap\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -18,28 +19,9 @@ class AuthController extends Controller
             ->render('Auth/Login');
     }
 
-    public function handle(LoginRequest $request) {
-        $credentials = [
-            'sAMAccountName' => $request->get('login'),
-            'password' => $request->get('password'),
-        ];
-
+    public function handle(LoginDTO $loginDTO, Request $request) {
         try {
-            $user = User::query()
-                ->where('sAMAccountName', $credentials['sAMAccountName'])
-                ->first();
-
-            if(!$user)
-                throw new LoginFailedException('Пользователь не найден');
-
-            $user_in_group = $user->groups()
-                ->where('cn', 'FNS-web')
-                ->exists();
-
-            if(!$user_in_group)
-                throw new LoginFailedException('Пользователь не состоит в группе');
-
-            if (Auth::attempt($credentials)) {
+            if (app(HandlerInterface::class)->handle($loginDTO)) {
                 $request->session()->regenerate();
 
                 return redirect()->intended(route('welcome'));

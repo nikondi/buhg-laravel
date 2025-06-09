@@ -12,14 +12,18 @@ class GenerateToken extends Command
      *
      * @var string
      */
-    protected $signature = 'token:generate {user_id} {type=api} {--clear} {--years=}';
+    protected $signature = 'token:generate
+        {user_id : ID пользователя}
+        {type=api : Тип авторизации}
+        {--clear : Удалить предыдущий токен}
+        {--years= : Время жизни токена, лет}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Создание api-токена для интеграции с внешними приложениями';
 
     /**
      * Execute the console command.
