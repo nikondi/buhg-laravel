@@ -22,4 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 
-typesense-data
+.docker/meilisearch/data
+.docker/backend/psysh/psysh_history
