@@ -9,12 +9,10 @@ class RequestObserver
 {
     use TracksHistory;
 
-    public function created(RequestModel $requestModel): void
+    public function creating(RequestModel $requestModel): void
     {
-        if(!$requestModel->number) {
+        if(!$requestModel->number)
             $requestModel->number = str_pad($this->getLastNumber() + 1, 12, "0", STR_PAD_LEFT);
-            $requestModel->save();
-        }
     }
 
     public function updating(RequestModel $requestModel): void

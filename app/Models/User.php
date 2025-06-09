@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
@@ -41,9 +42,7 @@ class User extends Authenticatable implements LdapAuthenticatable
      */
     public function hasRole(UserRole|string|array $role): bool
     {
-        if(is_string($role))
-            $role = [$role];
-        $role = array_map(fn($r) => ($r instanceof UserRole)?($r->value):$r, $role);
+        $role = array_map(fn($r) => ($r instanceof UserRole)?($r->value):$r, Arr::wrap($role));
 
         return in_array($this->role->value, $role);
     }
