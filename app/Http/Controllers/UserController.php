@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserCreateRequest;
+use App\DTO\CreateUserDTO;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -32,9 +32,11 @@ class UserController extends Controller
         return back();
     }
 
-    public function store(UserCreateRequest $request)
+    public function store(CreateUserDTO $createUserDTO)
     {
-        User::create($request->validated());
+        User::make($createUserDTO)
+            ->save();
+
         return back();
     }
     public function update(UserUpdateRequest $request, User $user)

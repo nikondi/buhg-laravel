@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\DTO\CreateUserDTO;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,6 +12,9 @@ use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 
+/**
+ * @property UserRole $role
+ * */
 class User extends Authenticatable implements LdapAuthenticatable
 {
     use Notifiable,
@@ -30,24 +35,27 @@ class User extends Authenticatable implements LdapAuthenticatable
         'role',
     ];
 
-    public function hasRole(string|array $role): bool
+    /**
+     * @param UserRole|string|UserRole[]|string[] $role
+     * @return bool
+     */
+    public function hasRole(UserRole|string|array $role): bool
     {
-        $has = false;
         if(is_string($role))
             $role = [$role];
+        $role = array_map(fn($r) => ($r instanceof UserRole)?($r->value):$r, $role);
 
-        foreach($role as $r) {
-            if($this->role == $r) {
-                $has = true;
-                break;
-            }
-        }
-        return $has;
+        return in_array($this->role->value, $role);
     }
 
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    public static function make(CreateUserDTO $createUserDTO): User
+    {
+        return new static($createUserDTO->only('email', 'name', 'login', 'password', 'role')->toArray());
     }
 
     /**
@@ -69,6 +77,7 @@ class User extends Authenticatable implements LdapAuthenticatable
     {
         return [
             'password' => 'hashed',
+            'role' => UserRole::class,
         ];
     }
 }
