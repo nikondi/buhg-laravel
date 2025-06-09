@@ -203,6 +203,7 @@ return [
 
     'attributes' => [
         'password' => 'Пароль',
+        'password_confirmation' => 'Подтверждение пароля',
         'login' => 'Логин',
         'email' => 'E-mail',
         'inn' => 'ИНН',
