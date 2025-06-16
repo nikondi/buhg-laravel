@@ -1,0 +1,261 @@
+
+openapi: 3.0.4
+info:
+  title: Сервис для сбора и обработки Запросов справки об оплате образовательных услуг с сайта ЛГТУ
+  version: 1.0.0
+servers:
+  - url: '{APP_URL}/api/'
+paths:
+  /request:
+    post:
+      summary: Создать заявку
+      description: Создать заявку
+      operationId: createRequest
+      requestBody:
+        description: Добавляет заявку в БД
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Request'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - api_key: []
+components:
+  schemas:
+    Request:
+      title: 'Заявка'
+      required:
+        - status
+        - education_type
+        - pickup_type
+        - surname
+        - name
+        - phone
+        - email
+        - birthdate
+        - inn
+        - doc_type
+        - doc_number
+        - doc_date
+        - contract_number
+        - contract_date
+        - contract_cost
+        - report_year
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+          example: 38
+          description: 'Номер заявки. Генерируется, если не передан'
+        director_id:
+          type: integer
+          format: int64
+          example: 1
+          description: 'ID ответственного'
+        organization_id:
+          type: integer
+          format: int64
+          example: 1
+          description: 'ID организации'
+        status:
+          type: string
+          enum:
+            - new
+            - in_work
+            - downloaded_xml
+            - done
+            - ready_pickup
+            - declined
+            - duplicate
+          example: 'new'
+          description: 'Статус заявки. Для новой - new'
+        education_type:
+          type: string
+          enum:
+            - 'full-time'
+            - 'part-type'
+          description: 'Вид обучения. full-time - очное, part-time - заочное'
+          example: 'full-time'
+        pickup_type:
+          type: string
+          enum:
+            - pickup
+            - send
+          example: 'pickup'
+          description: 'Вид получения: send - отправка в налоговую, pickup - получить лично'
+        surname:
+          type: string
+          example: 'Пупкин'
+          description: 'Фамилия плательщика'
+        name:
+          type: string
+          example: 'Василий'
+          description: 'Имя плательщика'
+        lastname:
+          type: string
+          example: 'Петрович'
+          description: 'Отчество плательщика'
+        phone:
+          type: string
+          example: '1231231212'
+          description: 'Номер телефона плательщика'
+        email:
+          type: string
+          example: 'example@example.ru'
+          description: 'E-mail плательщика'
+        birthdate:
+          type: string
+          format: date
+          example: '2003-07-01'
+          description: 'Дата рождения плательщика'
+        inn:
+          type: number
+          example: '123123123123'
+          description: 'ИНН плательщика'
+        doc_type:
+          $ref: '#/components/schemas/DocType'
+        doc_number:
+          type: string
+          example: '12 12 123123'
+          description: 'Номер документа'
+        doc_date:
+          type: string
+          format: date
+          example: '2020-07-10'
+          description: 'Дата выдачи документа'
+        contract_number:
+          type: string
+          example: '48-12'
+          description: 'Номер договора'
+        contract_date:
+          type: string
+          format: date
+          example: '2024-10-14'
+          description: 'Дата договора'
+        contract_cost:
+          type: string
+          format: float
+          example: 46999.99
+          description: 'Сумма расходов на оказанные услуги'
+        report_year:
+          type: number
+          example: 2025
+          description: 'Отчетный год'
+        same_student:
+          type: boolean
+          example: true
+          description: 'Налогоплательщик и обучаемый являются одним лицом'
+        student_surname:
+          type: string
+          example: 'Васечкина'
+          description: 'Фамилия студента'
+        student_name:
+          type: string
+          example: 'Ангелина'
+          description: 'Имя студента'
+        student_lastname:
+          type: string
+          example: 'Александровна'
+          description: 'Отчество студента'
+        student_phone:
+          type: string
+          example: '1231231212'
+          description: 'Номер телефона студента'
+        student_birthdate:
+          type: string
+          format: date
+          example: '2003-07-01'
+          description: 'Дата рождения студента'
+        student_inn:
+          type: number
+          example: '123123123123'
+          description: 'ИНН студента'
+        student_doc_type:
+          $ref: '#/components/schemas/DocType'
+        student_doc_number:
+          type: string
+          example: '12 12 123123'
+          description: 'Номер документа'
+        student_doc_date:
+          type: string
+          format: date
+          example: '2020-08-11'
+          description: 'Дата выдачи документа'
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+          example: []
+          description: 'Чеки об оплате'
+    DocType:
+      title: 'Код документа'
+      type: string
+      enum:
+        - '21'
+        - '27'
+        - '24'
+        - '23'
+        - '19'
+        - '15'
+        - '14'
+        - '13'
+        - '12'
+        - '11'
+        - '10'
+        - '08'
+        - '07'
+        - '03'
+      description: 'Код вида документа'
+
+    Error:
+      title: 'Ошибка'
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+      required:
+        - code
+        - message
+
+  requestBodies:
+    Request:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Request'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Request'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

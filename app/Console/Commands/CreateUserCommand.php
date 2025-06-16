@@ -12,7 +12,7 @@ class CreateUserCommand extends Command
 {
     protected $signature = 'user:create';
 
-    protected $description = 'Создание суперпользователя, не привязанного к LDAP';
+    protected $description = 'Создание локального пользователя, не привязанного к LDAP';
 
     /**
      * @throws \Throwable
